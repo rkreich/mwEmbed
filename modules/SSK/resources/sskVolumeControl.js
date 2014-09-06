@@ -20,10 +20,11 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 
 	setup: function( embedPlayer ) {
 		this.bind('layoutBuildDone', this.addBindings.bind(this));
+		//this.addBindings();
 
 		var _this = this;
 		this.cookieName = this.pluginName + '_volumeValue';
-		this.bind( 'playerReady ' , function(){
+		this.bind( 'layoutBuildDone ' , function(){
 			if ( (_this.getConfig( 'useCookie' ) && $.cookie( _this.cookieName ) ) ) {
 				var volumeValue = parseInt( $.cookie( _this.cookieName ) );
 				if ( !isNaN( volumeValue ) &&
@@ -36,7 +37,7 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 					}
 					_this.firstUpdate = true;
 					_this.getPlayer().setVolume( volumeValue / 100 , true );
-					_this.updateVolumeUI.call(_this, volumeValue / 100 );
+					//_this.updateVolumeUI.call(_this, volumeValue / 100 );
 				}
 			}
 		});
@@ -62,12 +63,12 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 
 		this.prepare();
 
-		this.DOM.elm.on('mousedown', this.onmousedown.bind(this))
-                    .on('mouseup', this.onmouseup.bind(this));
+		this.DOM.elm.on('mousedown', this.onmousedown.bind(this));
+        $(document).on('mouseup', this.onmouseup.bind(this));
 
 		this.bind('volumeChanged', function(e, percent){
 			_this.updateVolumeUI( percent );
-			_this.saveVolume();
+			//_this.saveVolume();
 		});
 	},
 
@@ -85,6 +86,8 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 	calcVolume : function(e){
 	  	var posX    = e.pageX - this.DOM.elm.offset().left,
 	        percent = posX / this.vars.width;
+
+	    percent = percent.toFixed(2);
 
 	  	this.updateVolumeUI( percent );
 	  	this.getPlayer().setVolume( percent , true );
