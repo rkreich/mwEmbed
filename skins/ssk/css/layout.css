@@ -201,7 +201,7 @@ body { letter-spacing: 0.04em; }
 }
 
 .titleLabel{ padding:8px 0 6px 10px; font-size:1.4em; }
-.sskDescriptionLabel{ padding:0 0 8px 10px;  }
+.sskDescriptionLabel{ padding:0 0 8px 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 .descriptionLabel{
     display:block;
