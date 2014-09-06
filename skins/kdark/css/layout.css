@@ -482,17 +482,19 @@ body { letter-spacing: 0.04em; }
 
 
 /* volume control */
+.volumeControl{ float:right; margin-top:12px; }
+
 .volumeControl, .volumeControl > div {
     display: inline-block;
     position: relative;
     border-style: solid;
-    border-width: 20px 40px;
+    border-width:10px 20px;
     border-color: transparent rgba(255,255,255,.3) rgba(255,255,255,.3) transparent;
 }
 .volumeControl > div, .volumeControl > div > div {
     position: absolute;
-    bottom: -20px;
-    left: -40px;
+    bottom: -10px;
+    left: -20px;
     border-color: transparent #FFF #FFF transparent;
 }
 
