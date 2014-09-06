@@ -482,16 +482,16 @@ body { letter-spacing: 0.04em; }
 
 
 /* volume control */
-.volumeControl{ float:right; margin-top:12px; }
+.volumeControl{ float:right; margin-top:18px; }
 
 .volumeControl, .volumeControl > div {
     display: inline-block;
     position: relative;
     border-style: solid;
-    border-width:10px 20px;
+    border-width:8px 16px;
     border-color: transparent rgba(255,255,255,.3) rgba(255,255,255,.3) transparent;
 }
-.volumeControl > div, .volumeControl > div > div {
+.volumeControl > div{
     position: absolute;
     bottom: -10px;
     left: -20px;
@@ -618,12 +618,12 @@ body { letter-spacing: 0.04em; }
 
 .dropdown-menu > li > a:hover,.dropdown-menu > li > a:focus,.dropdown-submenu:hover > a,.dropdown-submenu:focus > a {
 	text-decoration: none;
-	color: #ffffff;
+	color: #fff;
 	background-color: #000;
 }
 
 .dropdown-menu > .active > a,.dropdown-menu > .active > a:hover,.dropdown-menu > .active > a:focus {
-	color: #ffffff;
+	color: #fff;
 	text-decoration: none;
 	outline: 0;
 }
@@ -674,17 +674,18 @@ body { letter-spacing: 0.04em; }
 
 .controlsContainer {
 	height:50px;
-	background-color: #222222;
+	background-color: #222;
 	background: rgba(34,34,34,0.8);
 	width:100%;
 	display: inline-block;
 }
 
 /* remove dotted border when clicking on buttons */
-.controlsContainer button{ outline:none; }
-button::-moz-focus-inner {
-  border: 0;
+button::-moz-focus-inner{
+    border:0;
+    outline:none;
 }
+button:focus{ outline:none; }
 
 
 .scrubber {
@@ -693,15 +694,15 @@ button::-moz-focus-inner {
 }
 
 .ui-tooltip {
-	background-color: #ffffff;
+	background-color: #fff;
 	background-repeat: repeat-x;
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff), to(#dddddd));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ddd));
 
-	background: -webkit-linear-gradient(top, #ffffff, #dddddd);
-	background: -moz-linear-gradient(top, #ffffff, #dddddd);
-	background: -o-linear-gradient(top, #ffffff, #dddddd);
-	background: -ms-linear-gradient(top, #ffffff, #dddddd);
-	background: linear-gradient(top, #ffffff, #dddddd);
+	background: -webkit-linear-gradient(top, #fff, #ddd);
+	background: -moz-linear-gradient(top, #fff, #ddd);
+	background: -o-linear-gradient(top, #fff, #ddd);
+	background: -ms-linear-gradient(top, #fff, #ddd);
+	background: linear-gradient(top, #fff, #ddd);
 
 	-webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.3);
 	box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.3);
