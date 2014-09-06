@@ -3,14 +3,14 @@
 	mw.PluginManager.add( 'sskScrubber', mw.KBaseComponent.extend({
 
 		defaultConfig: {
-			'parent': 'controlsContainer',
-			'insertMode': 'firstChild',
-			'order': 8,
-			'sliderPreview': true,
-			'thumbSlices': 100,
-			'thumbWidth': 100,
-			'minWidth': 100,
-			'displayImportance': "medium"
+			'parent'            : 'controlsContainer',
+			'insertMode'        : 'firstChild',
+			'order'             : 8,
+			'sliderPreview'     : true,
+			'thumbSlices'       : 100,
+			'thumbWidth'        : 100,
+			'minWidth'          : 100,
+			'displayImportance' : "medium"
 		},
 
 		isSliderPreviewEnabled: function(){
@@ -41,7 +41,7 @@
 				// need to add
 				this.bind('updateComponentsVisibilityStart', function(){
 					// take minWidth, so that normal display Importance rules work:
-					_this.getComponent().css('width', _this.getConfig('minWidth') );
+					//_this.getComponent().css('width', _this.getConfig('minWidth') );
 				})
 				this.bind( 'updateComponentsVisibilityDone', function(){
 					var $container = _this.getComponent().parent();
