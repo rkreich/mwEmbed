@@ -3,9 +3,9 @@
 	mw.PluginManager.add( 'scrubber', mw.KBaseComponent.extend({
 
 		defaultConfig: {
-			'parent': 'controlBarContainer',
+			'parent': 'controlsContainer',
 			'insertMode': 'firstChild',
-			'order': 25,
+			'order': 8,
 			'sliderPreview': true,
 			'thumbSlices': 100,
 			'thumbWidth': 100,
@@ -17,9 +17,9 @@
 			return this.getConfig("sliderPreview") && !this.isDisabled && !this.embedPlayer.isLive();
 		},
 		setup: function( embedPlayer ) {
-			// make sure insert mode reflects parent type:
 			if( this.getConfig('parent') == 'controlsContainer' ){
 				this.setConfig('insertMode', 'lastChild');
+			// make sure insert mode reflects parent type:
 			}
 			this.addBindings();
 			if ( this.isSliderPreviewEnabled() ){
@@ -190,11 +190,11 @@
 			if (!(data.val >=0 && this.duration >=0) ){
 				return;
 			}
-			// make sure the slider is in the dom: 
+			// make sure the slider is in the dom:
 			var $slider = $(".slider");
 			if( !$slider.length ){
 				this.log('.slider class not in DOM')
-				return; 
+				return;
 			}
 			//cache jqeury objects
 			var $sliderPreview  = this.getComponent().find(".sliderPreview");
@@ -291,7 +291,7 @@
 		getComponent: function() {
 			var _this = this;
 			if( !this.$el ) {
-				this.$el = $( '<div />' )
+				this.$el = $('<div />')
 							.attr({
 								'role' : 'slider'
 							})
@@ -299,9 +299,9 @@
 							.slider( this.getSliderConfig() );
 				// Up the z-index of the default status indicator:
 				this.$el.find( '.ui-slider-handle' )
-					.addClass('playHead PIE btn')
+					//.addClass('playHead PIE btn')
 					.wrap( '<div class="handle-wrapper" />' );
-				// Update attributes: 
+				// Update attributes:
 				this.updateAttr( { 'value': 0 } );
 
 				this.$el.find( '.ui-slider-range-min' ).addClass( 'watched' );
@@ -311,10 +311,8 @@
 				);
 				// if parent is controlsContainer set to zero width and update at update layout time.
 				if( this.getConfig('parent') == 'controlsContainer' ){
-					this.$el.css({
-						'width': this.getConfig('minWidth')
-					});
-					this.$el.addClass()
+					//this.$el.css({'width': this.getConfig('minWidth') });
+					//this.$el.addClass()
 				}
 			}
 			return this.$el;

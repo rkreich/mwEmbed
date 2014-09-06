@@ -3,22 +3,21 @@
 mw.PluginManager.add( 'volumeControl', mw.KBaseComponent.extend({
 
 	defaultConfig: {
-		parent: "controlsContainer",
-		order: 11,
-		layout: "horizontal",
-		showTooltip: true,
-		displayImportance: "medium",
-		accessibleControls: false,
-		accessibleVolumeChange: 0.1,
-		showSlider: true,
-        pinVolumeBar: false,
-		useCookie: true
+		parent                 : "controlsContainer",
+		order                  : 55,
+		layout                 : "horizontal",
+		showTooltip            : true,
+		displayImportance      : "medium",
+		accessibleControls     : false,
+		accessibleVolumeChange : 0.1,
+		pinVolumeBar           : false,
+		useCookie              : true
 
 	},
 	icons: {
-		'mute': 'icon-volume-mute',
-		'low': 'icon-volume-low',
-		'high': 'icon-volume-high'
+		'mute' : 'icon-volume-mute',
+		'low'  : 'icon-volume-low',
+		'high' : 'icon-volume-high'
 	},
 
 	setup: function( embedPlayer ) {
@@ -55,41 +54,20 @@ mw.PluginManager.add( 'volumeControl', mw.KBaseComponent.extend({
 	isSafeEnviornment: function(){
 		return !mw.isMobileDevice();
 	},
-	getSliderConfig: function(){
-		var _this = this;
-		return {
-			range: "min",
-			value: (this.getPlayer().getPlayerElementVolume() * 100),
-			min: 0,
-			max: 100,
-			change: function( event, ui ) {
-				_this.getPlayer().setVolume( (ui.value / 100) , true );
-			}
-		};
-	},
+
+	// this.getPlayer().getPlayerElementVolume()
+
 	addBindings: function() {
 		var _this = this;
-		// If the slider should be shown; 
-		if( this.getConfig('showSlider' ) ) {
-			var openSlider = function () {
-				_this.getComponent().addClass( 'open' );
-			};
-			var closeSlider = function () {
-				if ( !_this.getConfig( 'pinVolumeBar' ) ) {
-					_this.getComponent().removeClass( 'open' );
-				}
-			};
-
-			// Save component width on data attribute ( used for responsive player )
-			this.bind( 'layoutBuildDone' , function () {
-				openSlider();
-				// Firefox unable to get component width correctly without timeout
-				setTimeout( function () {
-					_this.getComponent().data( 'width' , _this.getComponent().width() );
-					closeSlider();
-				} , 100 );
-			} );
-		}
+		// If the slider should be shown;
+		// Save component width on data attribute ( used for responsive player )
+		this.bind( 'layoutBuildDone' , function () {
+			// Firefox unable to get component width correctly without timeout
+			setTimeout( function () {
+				_this.getComponent().data( 'width' , _this.getComponent().width() );
+				// closeSlider();
+			}, 100 );
+		} );
 		// Add click bindings
 		this.getBtn().click( function() {
 			if( !_this.getPlayer().isMuted() ){
@@ -120,9 +98,6 @@ mw.PluginManager.add( 'volumeControl', mw.KBaseComponent.extend({
 				}
 			} );
 		}
-		this.getBtn().focusin(openSlider);
-		this.getBtn().focusout(closeSlider);
-		this.getComponent().hover(openSlider, closeSlider);
 
 		this.bind( 'volumeChanged', function(e, percent){
 			_this.updateVolumeUI( percent );
@@ -130,7 +105,7 @@ mw.PluginManager.add( 'volumeControl', mw.KBaseComponent.extend({
 
 		});
 
-		this.getSlider().slider( this.getSliderConfig() );
+		//this.getSlider().slider( this.getSliderConfig() );
 		if ( this.getConfig( 'accessibilityLabels' ) ){
 			var percent = this.getPlayer().getPlayerElementVolume() * 100;
 			var title = gM('mwe-embedplayer-volume-value', percent );
@@ -170,27 +145,13 @@ mw.PluginManager.add( 'volumeControl', mw.KBaseComponent.extend({
 	getComponent: function() {
 		if( !this.$el ) {
 			var layoutClass = ' ' + this.getConfig('layout');
-			var $btn = $( '<button />' )
-						.addClass( "btn " + this.icons['high'] )
-						.attr( {'title': gM( 'mwe-embedplayer-volume-mute' ) ,'id': 'muteBtn'});
-			this.setAccessibility($btn, gM( 'mwe-embedplayer-volume-mute' ));
+
 			// Add the volume control icon
 			this.$el = $('<div />')
 				.addClass( this.getCssClass() + layoutClass )
 				.append(
-					$btn,
 					$( '<div />' ).addClass( 'slider' )
 				);
-			// add accessibility controls
-			if (this.getConfig("accessibleControls")){
-				var $accessibilityIncreaseVol = $('<button/>')
-					.addClass( "btn aria")
-					.attr({"id":"increaseVolBtn","title": gM("mwe-embedplayer-volume-increase")});
-				var $accessibilityDecreaseVol = $('<button/>')
-					.addClass( "btn aria")
-					.attr({"id":"decreaseVolBtn","title": gM("mwe-embedplayer-volume-decrease")});
-				this.$el.append($accessibilityIncreaseVol).append($accessibilityDecreaseVol);
-			}
 		}
 		return this.$el;
 	},

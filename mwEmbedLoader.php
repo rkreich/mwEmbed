@@ -1,9 +1,9 @@
 <?php
-// Include configuration 
+// Include configuration
 require_once( realpath( dirname( __FILE__ ) ) . '/includes/DefaultSettings.php' );
 require_once( realpath( dirname( __FILE__ ) ) . '/modules/KalturaSupport/KalturaCommon.php' );
 
-// only include the iframe if we need to: 
+// only include the iframe if we need to:
 // Include MwEmbedWebStartSetup.php for all of mediawiki support
 if( isset( $_GET['autoembed'] ) ){
 	require_once( realpath( dirname( __FILE__ ) ) . '/modules/ExternalPlayers/ExternalPlayers.php' );
@@ -29,25 +29,25 @@ class mwEmbedLoader {
 
 	var $iframeHeaders = null;
 	var $eTagHash = null;
-	
-	
+
+
 	var $loaderFileList = array(
 		// Get main kWidget resource:
-		'kWidget/kWidget.js', 
+		'kWidget/kWidget.js',
 		// Include json2 for old browsers that don't have JSON.stringify
-		'resources/json/json2.js', 
+		'resources/json/json2.js',
 		// By default include deprecated globals ( will be deprecated in 1.8 )
-		'kWidget/kWidget.deprecatedGlobals.js', 
+		'kWidget/kWidget.deprecatedGlobals.js',
 		// Get resource ( domReady.js )
-		'kWidget/kWidget.domReady.js', 
+		'kWidget/kWidget.domReady.js',
 		// Get resource (  mwEmbedLoader.js )
-		'kWidget/mwEmbedLoader.js', 
+		'kWidget/mwEmbedLoader.js',
 		// Include checkUserAgentPlayer code
 		'kWidget/kWidget.checkUserAgentPlayerRules.js',
 		// Get kWidget utilities:
-		'kWidget/kWidget.util.js',	
+		'kWidget/kWidget.util.js',
 		// kWidget basic api wrapper
-		//'resources/crypto/MD5.js', // currently commented out sig on api requests 
+		//'resources/crypto/MD5.js', // currently commented out sig on api requests
 		'kWidget/kWidget.api.js',
 	);
 
@@ -71,15 +71,15 @@ class mwEmbedLoader {
 			$this->eTagHash = md5( $o );
 		}
 		return $this->eTagHash;
-	}	
+	}
 	function output(){
 		global $wgEnableScriptDebug;
 		// Get the comment never minfied
 		$o = $this->getLoaderHeader();
-		
-		// Check for special incloader flag to ~not~ include the loader. 
-		if( ! isset( $_GET['incloader'] ) 
-				|| 
+
+		// Check for special incloader flag to ~not~ include the loader.
+		if( ! isset( $_GET['incloader'] )
+				||
 			$_GET['incloader'] != 'false'
 		){
 			$o.= $this->getLoaderPayload();
@@ -88,20 +88,21 @@ class mwEmbedLoader {
 		if( isset( $_GET['autoembed'] ) ){
 			$o.= $this->getAutoEmbedCode();
 		}
-		
+
 		// Support Etag and 304
 		if( $wgEnableScriptDebug == false && @trim($_SERVER['HTTP_IF_NONE_MATCH']) == $this->getOutputHash( $o ) ){
 			header("HTTP/1.1 304 Not Modified");
 			exit();
 		}
-		
+
 		// send cache headers
 		$this->sendHeaders( $o );
-		
+
 		// start gzip handler if possible:
-		if(!ob_start("ob_gzhandler")) ob_start();
-		
-		// check for non-fatal errors: 
+		//if(!ob_start("ob_gzhandler"))
+			ob_start();
+
+		// check for non-fatal errors:
 		if( $this->getError() ){
 			echo "if( console ){ console.log('" . json_encode($this->getError()) . "'); }";
 		}
@@ -110,9 +111,9 @@ class mwEmbedLoader {
 	}
 	private function getAutoEmbedCode(){
 		$o='';
-		
+
 		// Get the kWidget call ( pass along iframe payload path )
-		// Check required params: 
+		// Check required params:
 		$wid = $this->request()->get('wid');
 		if( !$wid ){
 			$this->setError( "missing wid param");
@@ -132,7 +133,7 @@ class mwEmbedLoader {
 			$this->setError( "missing playerId param");
 			return '';
 		}
-		
+
 		// Check optional params
 		$width = ( $this->request()->get('width') )? htmlspecialchars( $this->request()->get('width') ): 400;
 		$height = ( $this->request()->get('height') )? htmlspecialchars( $this->request()->get('height') ): 330;
@@ -141,13 +142,13 @@ class mwEmbedLoader {
 		$kIframe = new kalturaIframeClass();
 
 		$this->iframeHeaders = $kIframe->getHeaders();
-		
-		// get the kIframe 
+
+		// get the kIframe
 		$json = array(
 			'content' => $kIframe->getIFramePageOutput()
 		);
 		$o.="kWidget.iframeAutoEmbedCache[ '{$playerId}' ] = " . json_encode( $json ) . ";\n";
-		
+
 		$o.="if(!document.getElementById('{$playerId}')) { document.write( '<div id=\"{$playerId}\" style=\"width:{$width}px;height:{$height}px\"></div>' ); } \n";
 		$o.="kWidget.embed( '{$playerId}', { \n" .
 			"\t'wid': '{$wid}', \n" .
@@ -179,8 +180,8 @@ class mwEmbedLoader {
 		$o.="\n});";
 
 		return $o;
-	} 
-			
+	}
+
 	private function getLoaderPayload(){
 		$o = '';
 		// get the main payload minfied if possible
@@ -196,10 +197,10 @@ class mwEmbedLoader {
 			// get any per uiConf js:
 			$o.= $this->getMinPerUiConfJS();
 		}
-		
+
 		// After we load everything ( issue the kWidget.Setup call as the last line in the loader )
 		$o.="\nkWidget.setup();\n";
-		
+
 		return $o;
 	}
 	private function setError( $errorMsg ){
@@ -223,7 +224,7 @@ class mwEmbedLoader {
 		global $wgScriptCacheDirectory;
 		return $wgScriptCacheDirectory . '/' . substr( $key, 0, 2) . '/'.  substr( $key, 2 );
 	}
-	
+
 	private function getMinPerUiConfJS(){
 		global $wgResourceLoaderMinifierStatementsOnOwnLine;
 		// mwEmbedLoader based uiConf values can be hashed by the uiconf
@@ -237,23 +238,23 @@ class mwEmbedLoader {
 		if( $cacheJS !== false ){
 			return $cacheJS;
 		}
-		//minfy js 
+		//minfy js
 		require_once( realpath( dirname( __FILE__ ) ) . '/includes/libs/JavaScriptMinifier.php' );
 		$minjs = JavaScriptMinifier::minify( $uiConfJs, $wgResourceLoaderMinifierStatementsOnOwnLine );
-		// output minified cache: 
+		// output minified cache:
 		$this->outputFileCache( $key, $minjs);
 		return $minjs;
 	}
-	
+
 	/** gets any defiend on-page uiConf js */
 	private function getPerUiConfJS(){
 		if( ! $this->request()->get('uiconf_id')
 				||
-			!$this->getUiConfObject() 
-				|| 
-			( ! $this->request()->get('wid') 
+			!$this->getUiConfObject()
+				||
+			( ! $this->request()->get('wid')
 				&&
-			  ! $this->request()->get('p') 	
+			  ! $this->request()->get('p')
 			)
 		){
 			// directly issue the UiConfJs callback
@@ -265,23 +266,23 @@ class mwEmbedLoader {
 		$o='';
 		// always include UserAgentPlayerRules:
 		$o.= $mweUiConfJs->getUserAgentPlayerRules();
-		
+
 		// support including special player rewrite flags if set in uiConf:
 		if( $this->getUiConfObject()->getPlayerConfig( null, 'Kaltura.LeadWithHTML5' ) === true
 			||
 			$this->getUiConfObject()->getPlayerConfig( null, 'KalturaSupport.LeadWithHTML5' ) === true
 		){
 			$o.="\n"."kWidget.addUserAgentRule('{$this->request()->get('uiconf_id')}', '/.*/', 'leadWithHTML5');";
-		
+
 		}
 		if( $this->getUiConfObject()->getPlayerConfig( null, 'Kaltura.ForceFlashOnIE10' ) === true ){
 			$o.="\n".'mw.setConfig(\'Kaltura.ForceFlashOnIE10\', true );' . "\n";
-		} 
+		}
 
 		if( $this->getUiConfObject()->isJson() ) {
 			$o.="\n"."kWidget.addUserAgentRule('{$this->request()->get('uiconf_id')}', '/.*/', 'leadWithHTML5');";
 		}
-		
+
 		// If we have entry data
 		if( $this->request()->get('entry_id') ){
 			global $container, $wgExternalPlayersSupportedTypes;
@@ -298,7 +299,7 @@ class mwEmbedLoader {
 				//
 			}
 		}
-		
+
 		// Only include on page plugins if not in iframe Server
 		if( !isset( $_REQUEST['iframeServer'] ) ){
 			$o.= $mweUiConfJs->getPluginPageJs( 'kWidget.inLoaderUiConfJsCallback' );
@@ -306,7 +307,7 @@ class mwEmbedLoader {
 			$o.='kWidget.inLoaderUiConfJsCallback();';
 		}
 		// set the flag so that we don't have to request the services.php
-		$o.= "\n" . 'kWidget.uiConfScriptLoadList[\'' . 
+		$o.= "\n" . 'kWidget.uiConfScriptLoadList[\'' .
 			$this->request()->get('uiconf_id') .
 			'\'] = 1; ';
 		return $o;
@@ -331,7 +332,7 @@ class mwEmbedLoader {
 		}
 		return $this->uiconfObject;
 	}
-	
+
 	private function getMinCombinedLoaderJs(){
 		global $wgHTTPProtocol, $wgMwEmbedVersion, $wgResourceLoaderMinifierStatementsOnOwnLine;
 		$key = '/loader_' . $wgHTTPProtocol . '.min.' . $wgMwEmbedVersion . '.js' ;
@@ -339,7 +340,7 @@ class mwEmbedLoader {
 		if( $cacheJS !== false ){
 			return $cacheJS;
 		}
-		// Else get from files: 
+		// Else get from files:
 		$rawScript = $this->getCombinedLoaderJs();
 		// Get the JSmin class:
 		require_once( realpath( dirname( __FILE__ ) ) . '/includes/libs/JavaScriptMinifier.php' );
@@ -369,12 +370,12 @@ class mwEmbedLoader {
 	private function getCombinedLoaderJs(){
 		global $wgResourceLoaderUrl, $wgMwEmbedVersion;
 		$loaderJs = '';
-		
+
 		// Output all the files
 		foreach( $this->loaderFileList as $file ){
 			$loaderJs .= file_get_contents( $file );
 		}
-		
+
 		return $loaderJs;
 	}
 	private function getExportedConfig(){
@@ -408,7 +409,7 @@ class mwEmbedLoader {
 		if( isset( $_GET['pskwidgetpath'] ) ){
 			$exportedJsConfig[ 'Kaltura.KWidgetPsPath' ] = htmlspecialchars( $_GET['pskwidgetpath'] );
 		}
-		
+
 		// Append Custom config:
 		foreach( $exportedJsConfig as $key => $val ){
 			// @@TODO use a library Boolean conversion routine:
@@ -427,12 +428,12 @@ class mwEmbedLoader {
 	private function getLoaderHeader(){
 		global $wgMwEmbedVersion, $wgResourceLoaderUrl, $wgMwEmbedVersion;
 		$o = "/**
-* Kaltura HTML5 Library v$wgMwEmbedVersion  
+* Kaltura HTML5 Library v$wgMwEmbedVersion
 * http://html5video.org/kaltura-player/docs/
-* 
-* This is free software released under the GPL2 see README more info 
+*
+* This is free software released under the GPL2 see README more info
 * http://html5video.org/kaltura-player/docs/readme
-* 
+*
 * Copyright " . date("Y") . " Kaltura Inc.
 */\n";
 		// Add the library version:
@@ -446,7 +447,7 @@ class mwEmbedLoader {
 	/** send the cdn headers */
 	private function sendHeaders( $o ){
 		global $wgEnableScriptDebug;
-		
+
 		header("Etag: " . $this->getOutputHash( $o ) );
 		header("Content-Type: text/javascript");
 		if( isset( $_GET['debug'] ) || $wgEnableScriptDebug ){
@@ -456,7 +457,7 @@ class mwEmbedLoader {
 		} else if ( isset($_GET['autoembed']) && $this->iframeHeaders ){
 			// Grab iframe headers and pass them to our loader
 			foreach( $this->iframeHeaders as $header ) {
-				// Don't include iframe Etag 
+				// Don't include iframe Etag
 				// ( use mwEmbedLoader Etag that includes loader in the overall hash )
 				if( strpos($header, 'Etag:') !== -1 ){
 					header( $header );
@@ -471,7 +472,7 @@ class mwEmbedLoader {
 			}
 			// Check for an error ( only cache for 60 seconds )
 			if( $this->getError() ){
-				$max_age = 60; 
+				$max_age = 60;
 			}
 			header("Cache-Control: public, max-age=$max_age max-stale=0");
 			header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $max_age) . 'GMT');

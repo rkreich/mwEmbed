@@ -1,0 +1,26 @@
+<html>
+<head></head>
+<body>
+
+<div id="kplayer" style="width:900px; height:510px;"></div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="mwEmbedLoader.php" type="text/javascript"></script>
+<script type="text/javascript">
+    $.get("player.json", function(jsonConfig){
+        mw.setConfig('Kaltura.EnableEmbedUiConfJs', true);
+        mw.setConfig("KalturaSupport.LeadWithHTML5", true);
+        var params = {
+            'targetId': 'kplayer',
+            'wid': '_450',
+            'uiconf_id': '25457272',
+            'entry_id': '1_feovx6n8',
+            'flashvars': {
+                'jsonConfig': JSON.stringify(jsonConfig)
+            }
+        };
+        kWidget.embed(params);
+    });
+</script>
+</body>
+</html>
