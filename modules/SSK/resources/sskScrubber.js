@@ -53,7 +53,7 @@
 					if( targetSize <  _this.getConfig('minWidth') ){
 						targetSize = _this.getConfig('minWidth');
 					}
-					_this.getComponent().css('width', ( targetSize ) + 'px' );
+					//_this.getComponent().css('width', ( targetSize ) + 'px' );
 				});
 			}
 			// Update buffer bar
