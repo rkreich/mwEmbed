@@ -1,0 +1,11 @@
+{
+	"moduleName": "ssk",
+	"name": "",
+	"version": "1.0.0",
+	"author": "",
+
+	"cssFiles": [
+		"css/layout.css",
+		"css/icons.css"
+	]
+}

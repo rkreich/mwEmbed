@@ -7,7 +7,7 @@
             "plugin" : true,
             "hover"  : true
         },
-        "scrubber": {
+        "sskScrubber": {
             "plugin": true
         },
         "largePlayBtn": {
@@ -19,7 +19,7 @@
         "playPauseBtn": {
             "plugin": true
         },
-        "volumeControl": {
+        "sskVolumeControl": {
             "accessibleControls"     : false,
             "accessibleVolumeChange" : 0.1,
             "plugin"                 : true
@@ -64,8 +64,14 @@
             "plugin": true
         },
         "titleLabel": {
-            "align": "left",
+            "align": "none",
             "text": "{mediaProxy.entry.name}",
+            "plugin": true
+        },
+        "sskDescriptionLabel": {
+            "align": "none",
+            "order": "2",
+            "text": "{mediaProxy.entry.description}",
             "plugin": true
         },
         "sourceSelector": {
@@ -109,6 +115,6 @@
         }
     ],
     "layout": {
-        "skin": "kdark"
+        "skin": "ssk"
     }
 }

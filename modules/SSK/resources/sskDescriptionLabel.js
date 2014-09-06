@@ -1,11 +1,11 @@
 ( function( mw, $ ) {"use strict";
 
-	mw.PluginManager.add( 'titleLabel', mw.KBaseComponent.extend({
+	mw.PluginManager.add( 'sskDescriptionLabel', mw.KBaseComponent.extend({
 		defaultConfig: {
 			"parent" : "topBarContainer",
-			"order"  : 1,
+			"order"  : 2,
 			"align"  : "left",
-			"text"   : '{mediaProxy.entry.name}'
+			"text"     : '{mediaProxy.entry.description}'
 		},
 		setup: function(){
 			var _this = this;
