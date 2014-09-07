@@ -87,7 +87,11 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 	  	var posX    = e.pageX - this.DOM.elm.offset().left,
 	        percent = posX / this.vars.width;
 
-	    percent = percent.toFixed(2);
+		percent = percent.toFixed(2);
+		if( percent > .95 )
+			percent = 1;
+		if( percent < 0.1)
+			percent = 0;
 
 	  	this.updateVolumeUI( percent );
 	  	this.getPlayer().setVolume( percent , true );
@@ -95,11 +99,6 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 	},
 
 	updateVolumeUI: function( percent ){
-		if( percent > .95 )
-			percent = 1;
-		if( percent < 0.05)
-			percent = 0;
-
 		var newBorderWidth = [this.vars.borderWidth[0] * percent, this.vars.borderWidth[1] * percent];
 
 		this.DOM.slider[0].style.borderWidth = newBorderWidth[0] + "px " + newBorderWidth[1] + "px";
@@ -113,7 +112,7 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 		this.DOM.elm = elm;
 		this.DOM.slider = elm.find('.slider');
 
-		this.vars.width = this.DOM.elm[0].scrollWidth;
+		this.vars.width = this.DOM.elm.outerWidth(false);
 		this.vars.borderWidth = [this.vars.width/4, this.vars.width/2];
 	},
 

@@ -27,7 +27,6 @@ mw.PluginManager.add( 'volumeControl', mw.KBaseComponent.extend({
 		this.cookieName = this.pluginName + '_volumeValue';
 		this.bind( 'playerReady ' , function () {
 			if ( (_this.getConfig( 'useCookie' ) && $.cookie( _this.cookieName ) ) ) {
-				debugger;
 				var volumeValue = parseInt( $.cookie( _this.cookieName ) );
 				if ( !isNaN( volumeValue ) &&
 					volumeValue >= 0 &&

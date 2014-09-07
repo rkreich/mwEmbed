@@ -217,6 +217,12 @@ body { letter-spacing: 0.04em; }
     -o-transition: bottom 0.15s ease-out;
     -ms-transition: bottom 0.15s ease-out;
     transition: bottom 0.15s ease-out;
+
+    user-select: none;
+    -o-user-select:none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
 }
 
 
@@ -343,12 +349,11 @@ body { letter-spacing: 0.04em; }
 }
 .controlsContainer .scrubber{
     position:absolute;
-    left:43px;
-    right:124px;
     top:0;
     bottom:0;
     margin:auto;
     border-radius:1px;
+    display: inline-block;
 }
 
 .controlsContainer .scrubber .handle-wrapper > a{
