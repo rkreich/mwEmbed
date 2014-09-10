@@ -94,6 +94,9 @@
         },
         "sskSourceSelector": {
             "plugin"         : true
+        },
+        "sskEndScreen": {
+            "plugin"         : true
         }
     },
     "uiVars": [

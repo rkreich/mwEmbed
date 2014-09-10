@@ -31,4 +31,11 @@ return array(
         'dependencies'      => 'mw.KBaseComponent',
         'kalturaPluginName' => 'sskSourceSelector',
     ),
+    "sskEndScreen" => array(
+        'scripts'           => "resources/sskEndScreen.js",
+        'styles' => "../SSK/resources/sskEndScreen.css",
+        'templates' => "../SSK/resources/sskEndScreen.tmpl.html",
+        'dependencies'      => 'mw.KBaseScreen',
+        'kalturaPluginName' => 'sskEndScreen',
+    ),
 );
