@@ -503,8 +503,8 @@ body { letter-spacing: 0.04em; }
 }
 .volumeControl > div{
     position: absolute;
-    bottom: -20px;
-    left:-26px;
+    bottom: -18px;
+    left:-36px;
     border-color: transparent #FFF #FFF transparent;
 }
 
