@@ -16,4 +16,19 @@ return array(
         'dependencies'      => 'mw.KBaseComponent',
         'kalturaPluginName' => 'sskDescriptionLabel',
     ),
+    "sskTopBarContainer" => array(
+        'scripts'           => "resources/sskTopBarContainer.js",
+        'dependencies'      => 'mw.KBaseComponent',
+        'kalturaPluginName' => 'sskTopBarContainer',
+    ),
+    "sskControlBarContainer" => array(
+        'scripts'           => "resources/sskControlBarContainer.js",
+        'dependencies'      => 'mw.KBaseComponent',
+        'kalturaPluginName' => 'sskControlBarContainer',
+    ),
+    "sskSourceSelector" => array(
+        'scripts'           => "resources/sskSourceSelector.js",
+        'dependencies'      => 'mw.KBaseComponent',
+        'kalturaPluginName' => 'sskSourceSelector',
+    ),
 );

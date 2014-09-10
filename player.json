@@ -85,6 +85,15 @@
             "align"                 : "right",
             "playlistId"            : "",
             "displayOnPlaybackDone" : true
+        },
+        "sskTopBarContainer": {
+            "plugin" : true
+        },
+        "sskControlBarContainer": {
+            "plugin" : true
+        },
+        "sskSourceSelector": {
+            "plugin"         : true
         }
     },
     "uiVars": [
