@@ -100,9 +100,9 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 		if( percent < 0.05)
 			percent = 0;
 
-		var newBorderWidth = [this.vars.borderWidth[0] * percent, this.vars.borderWidth[1] * percent];
+		var newBorderWidth = [this.vars.border[0] * percent, this.vars.border[1] * percent];
 
-		this.DOM.slider[0].style.borderWidth = newBorderWidth[0] + "px " + newBorderWidth[1] + "px";
+		this.DOM.slider[0].style.borderWidth = "0 0 "  + newBorderWidth[1] + "px " + newBorderWidth[0] + "px";
 	},
 
 	DOM : {},
@@ -113,8 +113,8 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 		this.DOM.elm = elm;
 		this.DOM.slider = elm.find('.slider');
 
-		this.vars.width = this.DOM.elm[0].scrollWidth;
-		this.vars.borderWidth = [this.vars.width/4, this.vars.width/2];
+		this.vars.width = this.DOM.elm[0].offsetWidth;
+		this.vars.border = [this.vars.width, this.DOM.elm[0].offsetHeight];
 	},
 
 	getComponent: function(){
