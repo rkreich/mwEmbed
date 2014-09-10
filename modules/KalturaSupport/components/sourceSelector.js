@@ -46,7 +46,7 @@
 				}
 				_this.getMenu().setActive({'key': 'id', 'val': selectedId});
 				_this.onEnable();
-			});	
+			});
 
 			this.bind( 'sourceSwitchingStarted', function(){
 				_this.onDisable();
@@ -82,21 +82,21 @@
 			return this.getPlayer().mediaElement.getPlayableSources();
 		},
 
-		buildMenu: function(){	
+		buildMenu: function(){
 			var _this = this;
 
 			// Destroy old menu
 			this.getMenu().destroy();
 
 			var sources = this.getSources();
-			
+
 			if( ! sources.length ){
 				_this.log("Error with getting sources");
 				return ;
 			}
-			
+
 			if( sources.length == 1 ){
-				// no need to do building menu logic. 
+				// no need to do building menu logic.
 				this.addSourceToMenu( sources[0], _this.getSourceTitle(sources[0]) );
 				return ;
 			}
@@ -121,7 +121,7 @@
 					if( source.getHeight() != 0
 						&&
 						( _this.getSourceSizeName( prevSource )
-							== 
+							==
 						_this.getSourceSizeName( source ) )
 					){
 						//if the selected source has the same height, skip this source
@@ -159,7 +159,7 @@
 					prevSource = source;
 				});
 			}
-			
+
 			var prevSource = null;
 			$.each( sources, function( sourceIndex, source ) {
 				if( source.skip ){
@@ -168,17 +168,17 @@
 				// Output the player select code:
 				var supportingPlayers = mw.EmbedTypes.getMediaPlayers().getMIMETypePlayers( source.getMIMEType() );
 				for ( var i = 0; i < supportingPlayers.length ; i++ ) {
-					if( 
+					if(
 						(
-							_this.getPlayer().selectedPlayer === undefined 
-							&& 
-							supportingPlayers[i].library == 'Native' 
-						) 
+							_this.getPlayer().selectedPlayer === undefined
+							&&
+							supportingPlayers[i].library == 'Native'
+						)
 							||
 						(
 							_this.getPlayer().selectedPlayer !== undefined
-							&& 
-							supportingPlayers[i].library == _this.getPlayer().selectedPlayer.library 
+							&&
+							supportingPlayers[i].library == _this.getPlayer().selectedPlayer.library
 						)
 					){
 						_this.addSourceToMenu( source );
@@ -188,9 +188,9 @@
 		},
 		isSourceSelected: function( source ){
 			var _this = this;
-			return ( _this.getPlayer().mediaElement.selectedSource && source.getSrc() 
-					== 
-					_this.getPlayer().mediaElement.selectedSource.getSrc() 
+			return ( _this.getPlayer().mediaElement.selectedSource && source.getSrc()
+					==
+					_this.getPlayer().mediaElement.selectedSource.getSrc()
 				);
 		},
 		addSourceToMenu: function( source ){
@@ -224,7 +224,7 @@
 			if( source.getMIMEType() == 'application/vnd.apple.mpegurl' ) {
 				return 'Auto';
 			}
-			var title = '';			
+			var title = '';
 			if( source.getHeight() ){
 				title+= this.getSourceSizeName( source );
 			} else if ( source.getBitrate() ) {
@@ -293,4 +293,4 @@
 		}
 	}));
 
-} )( window.mw, window.jQuery );		
+} )( window.mw, window.jQuery );

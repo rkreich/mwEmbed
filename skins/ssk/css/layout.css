@@ -492,14 +492,14 @@ body { letter-spacing: 0.04em; }
 .volumeControl, .volumeControl > div {
     display: inline-block;
     position: relative;
-    border-style: solid;
-    border-width:8px 16px;
-    border-color: transparent rgba(255,255,255,.3) rgba(255,255,255,.3) transparent;
+    border-style: dotted dotted solid;
+    border-width:0 0 18px 36px;
+    border-color: transparent transparent rgba(255,255,255,.3);
 }
 .volumeControl > div{
     position: absolute;
-    bottom: -8px;
-    left: -16px;
+    bottom: -20px;
+    left:-26px;
     border-color: transparent #FFF #FFF transparent;
 }
 

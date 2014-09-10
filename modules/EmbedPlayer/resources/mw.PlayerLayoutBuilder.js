@@ -31,7 +31,7 @@ mw.PlayerLayoutBuilder.prototype = {
 
 	// Flag to store controls status (disabled/enabled)
 	controlsDisabled: false,
-	
+
 	// binding postfix
 	bindPostfix: '.layoutBuilder',
 
@@ -76,7 +76,7 @@ mw.PlayerLayoutBuilder.prototype = {
 				$videoDisplay.parent('.videoDisplay').wrap(
 					$('<div />').addClass( 'videoHolder' )
 				);
-			}			
+			}
 
 			var $videoHolder = $videoDisplay.parent( '.videoHolder' );
 			if( $videoHolder.parent( '.mwPlayerContainer' ).length == 0 ){
@@ -107,7 +107,7 @@ mw.PlayerLayoutBuilder.prototype = {
 			// clear out base style
 			embedPlayer.style.cssText = '';
 		}
-		return this.$interface;		
+		return this.$interface;
 	},
 	isInFullScreen: function() {
 		return this.fullScreenManager.isInFullScreen();
@@ -144,7 +144,7 @@ mw.PlayerLayoutBuilder.prototype = {
 		if( mw.hasMouseEvents() ){
 			this.initToolTips();
 		}
-		
+
 		// Supports CSS3 on IE8/IE9
 		if( mw.isIE8() || mw.isIE9() ){
 			this.embedPlayer.bindHelper( 'layoutBuildDone', function(){
@@ -291,14 +291,14 @@ mw.PlayerLayoutBuilder.prototype = {
 				_this.getInterface().find('.' + containerId )
 			);
 		});
-		
-		// once complete trigger and event ( so dynamic space components can resize to take remaining space ) 
+
+		// once complete trigger and event ( so dynamic space components can resize to take remaining space )
 		$(this.embedPlayer ).trigger( 'updateComponentsVisibilityDone' )
 	},
 
 	updateContainerCompsByAvailableSpace: function( $container ){
 		if( !$container.length ) return;
-		
+
 		var _this = this;
 		var containerWidth = $container.width();
 
@@ -349,16 +349,16 @@ mw.PlayerLayoutBuilder.prototype = {
 		if (containerWidth < this.getComponentsWidthForContainer( $container )
 			&& this.canHideShowContainerComponents( $container, true ) ) {
 
-			while ( i++ < 30 && containerWidth < this.getComponentsWidthForContainer( $container ) 
+			while ( i++ < 30 && containerWidth < this.getComponentsWidthForContainer( $container )
 				&& this.canHideShowContainerComponents( $container, true ) ) {
 				mw.log("hideOneByImportance: " + containerWidth + ' < ' + this.getComponentsWidthForContainer( $container ));
 				hideOneByImportance();
 			}
-			// break ( only hide or show in one pass ) 
+			// break ( only hide or show in one pass )
 			return;
 		};
 		// Show till full
-		while ( i++ < 30 && $container.find('.comp:hidden').length 
+		while ( i++ < 30 && $container.find('.comp:hidden').length
 			&& this.canHideShowContainerComponents( $container, false )
 			&& containerWidth > (this.getComponentsWidthForContainer( $container ) + getNextShowWidth())) {
 			//mw.log("showOneByImportance: " + containerWidth + ' > ' + (this.getComponentsWidthForContainer( $container ) + ' ' + getNextShowWidth()));
@@ -462,7 +462,7 @@ mw.PlayerLayoutBuilder.prototype = {
 	*/
 	addControlBindings: function( ) {
 		// Set up local pointer to the embedPlayer
-		var _this = this;		
+		var _this = this;
 		var embedPlayer = this.embedPlayer;
 		var $interface = this.getInterface();
 		var adPlaybackState = 'adplay-state';
@@ -474,7 +474,7 @@ mw.PlayerLayoutBuilder.prototype = {
 
 		// Decide which bindings to add based on device capabilities
 		var addPlaybackBindings = function(){
-			if( embedPlayer.getFlashvars('disableOnScreenClick') ){ 
+			if( embedPlayer.getFlashvars('disableOnScreenClick') ){
 				return ;
 			}
 			if( mw.isTouchDevice() ){
@@ -510,7 +510,7 @@ mw.PlayerLayoutBuilder.prototype = {
 		b('updateLayout', function(){
 			// Firefox unable to get component width correctly without timeout
 			clearTimeout(_this.updateLayoutTimeout);
-			_this.updateLayoutTimeout = setTimeout(function(){ 
+			_this.updateLayoutTimeout = setTimeout(function(){
 				_this.updateComponentsVisibility();
 				_this.updatePlayerSizeClass();
 			},100);
@@ -557,12 +557,12 @@ mw.PlayerLayoutBuilder.prototype = {
 		});
 
 		// IE8 does not trigger click events on Flash objects
-		if( (embedPlayer.adSiblingFlashPlayer || embedPlayer.instanceOf == 'Kplayer') && 
+		if( (embedPlayer.adSiblingFlashPlayer || embedPlayer.instanceOf == 'Kplayer') &&
 			(mw.isIE8() || mw.isIE9()) ){
 			embedPlayer.getVideoHolder().bind('mouseup', function(){
 				$( embedPlayer ).trigger('click');
 			});
-		}		
+		}
 
 		// add the player click / touch bindings
 		addPlaybackBindings();
@@ -647,7 +647,7 @@ mw.PlayerLayoutBuilder.prototype = {
 		}
 
 		var hideControlsTimeout = null;
-		
+
 		// Bind a startTouch to show controls
 		$( embedPlayer ).bind( 'touchstart', function() {
 			showPlayerControls();
@@ -679,7 +679,7 @@ mw.PlayerLayoutBuilder.prototype = {
 			this.playerSizeClass = playerSizeClass;
 			this.getInterface()
 				.removeClass('size-tiny size-small size-medium size-large')
-				.addClass('size-' + this.playerSizeClass);			
+				.addClass('size-' + this.playerSizeClass);
 			this.embedPlayer.triggerHelper('playerSizeClassUpdate', [this.playerSizeClass] );
 		}
 	},
@@ -940,7 +940,7 @@ mw.PlayerLayoutBuilder.prototype = {
 		$overlay.fadeOut( "slow", function() {
 			$overlay.remove();
 		} );
-		
+
 		// Make sure overlay was removed
 		$overlay.remove();
 

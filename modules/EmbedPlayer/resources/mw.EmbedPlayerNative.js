@@ -25,8 +25,8 @@ mw.EmbedPlayerNative = {
 
 	// If the media loaded event has been fired
 	mediaLoadedFlag: null,
-	
-	// If network errors should triggered. 
+
+	// If network errors should triggered.
 	triggerNetworkErrorsFlag: true,
 
 	// A flag to keep the video tag offscreen.
@@ -88,11 +88,11 @@ mw.EmbedPlayerNative = {
 		this._propagateEvents = true;
 		$( this.getPlayerElement() ).css( 'position', 'absolute' );
 		readyCallback();
-		
+
 		// disable network errors on unload:
-		$( window ).unload(function() { 
+		$( window ).unload(function() {
 			_this.triggerNetworkErrorsFlag = false;
-			// remove any active error: 
+			// remove any active error:
 			if( _this.layoutBuilder ){
 				_this.layoutBuilder.closeAlert();
 			}
@@ -189,7 +189,7 @@ mw.EmbedPlayerNative = {
 		var _this = this;
 		var vid = _this.getPlayerElement();
 		this.ignoreNextNativeEvent = true;
-		
+
 		// empty out any existing sources:
 		if( vid && !mw.isIphone() ) {  //if track element attached for iphone it won't be deleted
 			$( vid ).empty();
@@ -240,7 +240,7 @@ mw.EmbedPlayerNative = {
 		if( this.autoplay ) {
 			playerAttribtues['autoplay'] = 'true';
 		}
-		
+
 		if( !cssSet ){
 			cssSet = {};
 		}
@@ -393,7 +393,7 @@ mw.EmbedPlayerNative = {
 		}
 		mw.log( 'EmbedPlayerNative::seek p: ' + percent + ' : ' + this.supportsURLTimeEncoding() + ' dur: ' + this.getDuration() + ' sts:' + this.seekTimeSec );
 
-		// Save currentTime 
+		// Save currentTime
 		this.kPreSeekTime = _this.currentTime;
 
 		// Trigger preSeek event for plugins that want to store pre seek conditions.
@@ -428,7 +428,7 @@ mw.EmbedPlayerNative = {
 					_this.pause();
 					_this.updatePlayheadStatus();
 				} else {
-					// continue to playback ( in a non-blocking call to avoid synchronous pause event ) 
+					// continue to playback ( in a non-blocking call to avoid synchronous pause event )
 					setTimeout(function(){
 						if ( !_this.stopPlayAfterSeek ) {
 							mw.log( "EmbedPlayerNative::sPlay after seek" );
@@ -447,7 +447,7 @@ mw.EmbedPlayerNative = {
 	* 		Percent to seek to of full time
 	*/
 	doNativeSeek: function( percent, callback ) {
-		
+
 		// If player already seeking, exit
 		var _this = this;
 		// chrome crashes with multiple seeks:
@@ -466,7 +466,7 @@ mw.EmbedPlayerNative = {
 		}
 
 		var targetTime =  percent * this.getDuration();
-		
+
 		// adjust seek target per startOffset
 		if( this.startOffset ){
 			targetTime += parseFloat( this.startOffset );
@@ -548,15 +548,15 @@ mw.EmbedPlayerNative = {
 			vid.play();
 			this.playing = true;
 		}
-		
-		// some initial calls to prime the seek: 
+
+		// some initial calls to prime the seek:
 		if( callbackCount == 0 && vid.currentTime == 0 ){
-			// when seeking turn off preload none and issue a load call. 
+			// when seeking turn off preload none and issue a load call.
 			$( vid )
 				.attr('preload', 'auto')
 				[0].load();
 		}
-		
+
 		// Make sure all the timeouts don't seek to an expired target:
 		$( this ).data('currentSeekTarget', seekTime );
 
@@ -579,7 +579,7 @@ mw.EmbedPlayerNative = {
 				$(vid).on('play.seekPrePlay',function(){
 					_this.restoreEventPropagation();
 					$(vid).off('play.seekPrePlay' );
-					// NOTE: there is no need to "pause" here since parent caller will 
+					// NOTE: there is no need to "pause" here since parent caller will
 					// handle if the player should continue to play at seek time or not .
 				});
 				vid.load();
@@ -1235,7 +1235,7 @@ mw.EmbedPlayerNative = {
 
 		// Clear the PreSeek time
 		this.kPreSeekTime = null;
-		
+
 		// Trigger the html5 action on the parent
 		if( this.seeking ){
 			// HLS safari triggers onseek when its not even close to the target time,
@@ -1270,13 +1270,13 @@ mw.EmbedPlayerNative = {
 			return ;
 		}
 		var timeSincePlay =  Math.abs( this.absoluteStartPlayTime - new Date().getTime() );
-		mw.log( "EmbedPlayerNative:: OnPaused:: propagate:" +  this._propagateEvents + 
+		mw.log( "EmbedPlayerNative:: OnPaused:: propagate:" +  this._propagateEvents +
 				' time since play: ' + timeSincePlay  + ' duringSeek:' + this.seeking );
 		// Only trigger parent pause if more than MonitorRate time has gone by.
 		// Some browsers trigger native pause events when they "play" or after a src switch
-		if( !this.seeking && !this.userSlide 
-				&& 
-			timeSincePlay > mw.getConfig( 'EmbedPlayer.MonitorRate' ) 
+		if( !this.seeking && !this.userSlide
+				&&
+			timeSincePlay > mw.getConfig( 'EmbedPlayer.MonitorRate' )
 		){
 			_this.parent_pause();
 			// in iphone when we're back from the native payer we need to show the image with the play button
@@ -1299,7 +1299,7 @@ mw.EmbedPlayerNative = {
 		if( this.useNativePlayerControls() && $( this ).find( 'video ').length == 0 ){
 			$( this ).hide();
 		}
-		
+
 		// Update the interface ( if paused )
 		if( ! this.ignoreNextNativeEvent && this._propagateEvents && this.paused && ( mw.getConfig('EmbedPlayer.EnableIpadHTMLControls') === true ) ){
 			this.parent_play();
