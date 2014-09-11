@@ -4,7 +4,6 @@
     mw.PluginManager.add('sskEndScreen', mw.KBaseScreen.extend({
 
         defaultConfig: {
-            parent: "topBarContainer",
             order: 4,
             templatePath: '../SSK/resources/sskEndScreen.tmpl.html'
         },

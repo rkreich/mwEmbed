@@ -26,6 +26,11 @@ return array(
         'dependencies'      => 'mw.KBaseComponent',
         'kalturaPluginName' => 'sskControlBarContainer',
     ),
+    "sskSideBarContainer" => array(
+        'scripts'           => "resources/sskSideBarContainer.js",
+        'dependencies'      => 'mw.KBaseComponent',
+        'kalturaPluginName' => 'sskSideBarContainer',
+    ),
     "sskSourceSelector" => array(
         'scripts'           => "resources/sskSourceSelector.js",
         'dependencies'      => 'mw.KBaseComponent',
@@ -37,5 +42,10 @@ return array(
         'templates' => "../SSK/resources/sskEndScreen.tmpl.html",
         'dependencies'      => 'mw.KBaseScreen',
         'kalturaPluginName' => 'sskEndScreen',
+    ),
+    "sskBeratungButton" => array(
+        'scripts'           => "resources/sskBeratungButton.js",
+        'dependencies'      => 'mw.KBaseComponent',
+        'kalturaPluginName' => 'sskBeratungButton',
     ),
 );
