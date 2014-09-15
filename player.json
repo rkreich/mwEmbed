@@ -13,7 +13,8 @@
             "position" : "right"
         },
         "sskScrubber": {
-            "plugin": true
+            "plugin": true,
+            "sliderPreview": false
         },
         "largePlayBtn": {
             "plugin": true
