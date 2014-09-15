@@ -1,7 +1,21 @@
 <?php
-$widgetId = '_450';
-$uiConfId = 25457272;
+$opts     = array(
+    'host:',
+    'wid:',
+    'uiconfid:',
+    'debug',
+);
+$options  = getopt('', $opts);
+$host     = _getOption($options ,'host', true);
+$widgetId = _getOption($options ,'wid', true);
+$uiConfId = _getOption($options ,'uiconfid', true);
+$playerId = 'kplayer';
+$isDebug  = _getOption($options ,'debug', false);
 
+
+/**
+ * Set global variables
+ */
 $_GET['wid']              = $widgetId;
 $_GET['uiconf_id']        = $uiConfId;
 $_GET['entry_id']         = '';
@@ -13,11 +27,14 @@ foreach ($_GET as $key => $value) {
     $_REQUEST[$key] = $value;
 }
 
-$_SERVER['SERVER_PORT'] = '80';
-$_SERVER['HTTP_HOST']   = 'devbuntu';
-$_SERVER['SERVER_NAME'] = 'devbuntu';
-$_SERVER['SCRIPT_NAME'] = '/player-dev/mwEmbedLoader.php';
+$_SERVER['SERVER_PORT'] = '443';
+$_SERVER['HTTP_HOST']   = $host;
+$_SERVER['SERVER_NAME'] = $host;
+$_SERVER['SCRIPT_NAME'] = 'mwEmbedLoader.php';
 
+/**
+ * Set output file names
+ */
 $fileSuffix            = $widgetId . '_' . $uiConfId;
 $outputFolder          = 'static';
 $mwEmbedFrameFilename  = 'mwEmbedFrame' . $fileSuffix . '.html';
@@ -55,9 +72,19 @@ $kIframe = new kalturaIframeClass();
 echo $kIframe->getIFramePageOutput();
 $output = ob_get_clean();
 // replace the paths to the mwEmbedLoader.php static js
-preg_match_all('#src="(http.*mwEmbedLoader.php[^"]*)#', $output, $matches);
+preg_match_all('#src="(https?.*mwEmbedLoader.php[^"]*)#', $output, $matches);
 foreach ($matches[1] as $mwEmbedLoaderUrl) {
     $output = str_replace($mwEmbedLoaderUrl, $mwEmbedLoaderFilename, $output);
+}
+
+// find static js includes like PIE.js
+preg_match_all('#src="https?://'.$host.'./([^"]*)"#', $output, $matches);
+foreach ($matches[1] as $srcInclude) {
+    $srcOutputDir = $outputFolder . '/'. pathinfo($srcInclude, PATHINFO_DIRNAME);
+    if (!file_exists($srcOutputDir))
+        mkdir($srcOutputDir, 0777, true);
+    copy($srcInclude, $outputFolder . '/'. $srcInclude);
+    $output = preg_replace('#src="https?://'.$host.'./([^"]*)"#', 'src="'.$srcInclude.'"', $output);
 }
 
 // replace entry result with null, instead of empty array, otherwise it won't be loaded
@@ -73,7 +100,7 @@ file_put_contents($outputFolder . '/' . $mwEmbedFrameFilename, $output);
 
 /**
  *
- * modules.js
+ * modules.js - TODO
  *
  */
 
@@ -91,7 +118,7 @@ foreach ($modules as $name) {
 
 $context        = new MwEmbedResourceLoaderContext($resourceLoader, $fauxRequest);
 $output         = $resourceLoader->makeModuleResponse($context, $modulesToLoad);
-file_put_contents($outputFolder . '/' . $loadModulesJsFilename, $output);
+//file_put_contents($outputFolder . '/' . $loadModulesJsFilename, $output);
 
 
 
@@ -115,3 +142,14 @@ foreach ($modules as $name ) {
 }
 $output = $resourceLoader->makeModuleResponse($context, $modulesToLoad, $missing);
 file_put_contents($outputFolder . '/' . $loadJSInlineFilename, $output);
+
+
+function _getOption($options, $key, $required) {
+    if ($required && !isset($options[$key])) {
+        echo 'Invalid arguments'.PHP_EOL;
+        echo 'php pack.php --host HOST --wid WID --uiconfid UICONFID --https --debug'.PHP_EOL;
+        die;
+    }
+
+    return isset($options[$key]) ? $options[$key] : null;
+}
