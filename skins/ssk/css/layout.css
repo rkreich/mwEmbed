@@ -1050,3 +1050,55 @@ box-shadow:  0px 1px 0px rgba(0, 0, 0, 0.3);
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+
+.video-list-wrapper {
+    background-color: #f6f6f6;
+    xheight: 350px;
+    xwidth: 330px;
+    overflow: hidden;
+    font: 14px Arial;
+    padding-left: 20px;
+}
+
+.media-rss-video-list{
+    xdisplay: table;
+    xwidth: 100%;
+    margin: 0;
+}
+
+.media-rss-video-list .ui-state-default,
+.playlistItem {
+    color: #FE0000;
+    background: #FFF;
+    text-decoration: none;
+    border-radius: 0;
+    cursor: pointer;
+    margin: 0 0 2px 0;
+}
+
+.playlistItem:hover {
+    background: #CCC;
+    color: #FFF;
+}
+
+.video-list-wrapper .playlistItem .thumb{
+    display:table-cell;
+    vertical-align:middle;
+    width:100px;
+    min-height:70px;
+    padding:.5em;
+}
+
+.video-list-wrapper .playlistItem .thumb img{
+    display:block;
+    width:100%;
+    vertical-align:bottom;
+}
+
+.video-list-wrapper .playlistItem .text{
+    display:table-cell;
+    vertical-align:middle;
+    padding-right:1em;
+    font-size: 14px;
+}

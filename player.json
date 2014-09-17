@@ -109,6 +109,9 @@
         },
         "sskBeratungButton": {
             "plugin"         : true
+        },
+        "staticHelper": {
+            "plugin"          :true
         }
     },
     "uiVars": [
