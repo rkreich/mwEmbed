@@ -8,6 +8,7 @@ return array(
             'mw.EmbedPlayer',
             'mediawiki.Uri',
             'mw.Playlist',
+            'mw.KApi',
         ),
         'kalturaPluginName' => 'staticHelper',
         'kalturaLoad' => 'always'

@@ -78,23 +78,45 @@ foreach ($matches[1] as $mwEmbedLoaderUrl) {
 }
 
 // find static js includes like PIE.js
-preg_match_all('#src="https?://'.$host.'./([^"]*)"#', $output, $matches);
+preg_match_all('#src="(https?://'.$host.'./[^"]*)"#', $output, $matches);
 foreach ($matches[1] as $srcInclude) {
-    $srcOutputDir = $outputFolder . '/'. pathinfo($srcInclude, PATHINFO_DIRNAME);
-    if (!file_exists($srcOutputDir))
-        mkdir($srcOutputDir, 0777, true);
-    copy($srcInclude, $outputFolder . '/'. $srcInclude);
-    $output = preg_replace('#src="https?://'.$host.'./([^"]*)"#', 'src="'.$srcInclude.'"', $output);
+    _copyUrlToStatic($srcInclude);
+    $newSrcInclude = trim(parse_url($srcInclude, PHP_URL_PATH), '/');
+    $output = str_replace($srcInclude, $newSrcInclude, $output);
 }
-
-// replace entry result with null, instead of empty array, otherwise it won't be loaded
-$output = str_replace('"entryResult":[]', '"entryResult":null', $output);
-
-// replace ks so it would be dynamically started on player load time
-$output = preg_replace('/"ks":"[^"]+"/', '"ks":null', $output);
 
 // the start up inline script
 $output = preg_replace('/writeScript\("[^"]+"\)/', 'writeScript("'.$loadJSInlineFilename.'")', $output);
+
+// find the iframe data
+preg_match('/window.kalturaIframePackageData = ([^;]+)/', $output, $matches);
+$iframeData = json_decode($matches[1], true);
+
+// copy and replace css files
+foreach($iframeData['skinResources'] as &$skinResource)
+{
+    $skinSrc = $skinResource['src'];
+    _copyUrlToStatic($skinSrc);
+    $skinResource['src'] = trim(parse_url($skinSrc, PHP_URL_PATH), '/');
+}
+
+// replace entry result with null, instead of empty array, otherwise it won't be loaded
+$iframeData['entryResult'] = null;
+
+// clear the error that is added by the incorrect (but required) playlist id
+$iframeData['error'] = null;
+
+// replace ks so it would be dynamically started on player load time
+array_walk_recursive($iframeData, function(&$item, $key) {
+    if ($key == 'ks')
+        $item = null;
+});
+
+// write the new iframe data
+$output = preg_replace('/window.kalturaIframePackageData = ([^;]+)/', 'window.kalturaIframePackageData = '.json_encode($iframeData), $output);
+
+// another ks occurrence in json
+$output = preg_replace('/"ks":"[^"]+"/', '"ks":null', $output);
 
 file_put_contents($outputFolder . '/' . $mwEmbedFrameFilename, $output);
 
@@ -104,7 +126,7 @@ file_put_contents($outputFolder . '/' . $mwEmbedFrameFilename, $output);
  *
  */
 
-$modules =  ["mw.MwEmbedSupport","mw.KalturaIframePlayerSetup","mw.KWidgetSupport","keyboardShortcuts","controlBarContainer","topBarContainer","sideBarContainer","largePlayBtn","playPauseBtn","fullScreenBtn","scrubber","volumeControl","currentTimeLabel","durationLabel","sourceSelector","related","acCheck","acPreview","carouselPlugin","liveStream","titleLabel","statisticsPlugin","StaticHelper","mw.EmbedPlayer","kdark"];
+$modules =  ["mw.MwEmbedSupport","mw.KalturaIframePlayerSetup","mw.KWidgetSupport","keyboardShortcuts","controlBarContainer","topBarContainer","sideBarContainer","largePlayBtn","playPauseBtn","fullScreenBtn","scrubber","volumeControl","currentTimeLabel","durationLabel","sourceSelector","related","acCheck","acPreview","carouselPlugin","liveStream","titleLabel","statisticsPlugin","mw.StaticHelper","mw.EmbedPlayer","kdark"];
 $fauxRequest    = new WebRequest();
 $resourceLoader = new MwEmbedResourceLoader();
 $modulesToLoad  = array();
@@ -147,9 +169,18 @@ file_put_contents($outputFolder . '/' . $loadJSInlineFilename, $output);
 function _getOption($options, $key, $required) {
     if ($required && !isset($options[$key])) {
         echo 'Invalid arguments'.PHP_EOL;
-        echo 'php pack.php --host HOST --wid WID --uiconfid UICONFID --https --debug'.PHP_EOL;
+        echo 'php pack.php --host HOST --wid WID --uiconfid UICONFID --debug'.PHP_EOL;
         die;
     }
 
     return isset($options[$key]) ? $options[$key] : null;
+}
+
+function _copyUrlToStatic($url) {
+    global $outputFolder;
+    $path = trim(parse_url($url, PHP_URL_PATH), '/');
+    $srcOutputDir = $outputFolder . '/'. pathinfo($path, PATHINFO_DIRNAME);
+    if (!file_exists($srcOutputDir))
+        mkdir($srcOutputDir, 0777, true);
+    copy($path, $outputFolder . '/'. $path);
 }
