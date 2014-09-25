@@ -46,14 +46,13 @@
                     }
                 }
 
+                // do nothing if there are no items
                 if( carousel.children.length < 2 )
                     return false;
 
-
                 itemToMove = children[0];
-                if( direction == 'next' ){
+                if( direction == 'next' )
                     itemToMove.style.marginLeft = -width + 'px';
-                }
                 else{
                     var itemToMove = children[children.length-1];
                     itemToMove.style.marginLeft = -width + 'px';

@@ -281,7 +281,7 @@ body { letter-spacing: 0.04em; }
 }
 
 .controlsContainer .scrubber .handle-wrapper > a{
-    margin-left: -1.8em;
+    margin-left:-17px;;
 }
 
 .sliderPreviewTime {
@@ -302,10 +302,14 @@ body { letter-spacing: 0.04em; }
     background-position: center;
     border-radius: 4px;
 }
-
-.scrubber .handle-wrapper {
+/*
+.scrubber .handle-wrapper{
     position: relative;
     margin: 0 0.44em;
+}
+*/
+.scrubber .handle-wrapper .ui-slider-handle:focus{
+    outline:0;
 }
 
 .scrubber .watched {
@@ -623,6 +627,7 @@ button:focus{
 }
 .btn:focus {
     /* outline: 1px dotted #999; */  /*  accesibility */
+    outline:0;
 }
 
 
