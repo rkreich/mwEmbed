@@ -59,17 +59,18 @@ body { letter-spacing: 0.04em; }
     font-size: 24px;
 }
 
+
+
 .sideBarContainer {
     position: absolute;
-    top: 4.6em;
+    top:60px;
     width: 100px;
     z-index: 100;
     box-sizing:border-box;
-    -webkit-transition: left 0.3s ease-in, right 0.3s ease-in;
-    -moz-transition: left 0.3s ease-in, right 0.3s ease-in;
-    -o-transition: left 0.3s ease-in, right 0.3s ease-in;
-    -ms-transition: left 0.3s ease-in, right 0.3s ease-in;
-    transition: left 0.3s ease-in, right 0.3s ease-in;
+    -moz-transition: left 0.15s ease-in, right 0.15s ease-in;
+    -o-transition: left 0.15s ease-in, right 0.15s ease-in;
+    -ms-transition: left 0.15s ease-in, right 0.15s ease-in;
+    transition: left 0.15s ease-in, right 0.15s ease-in;
     height: 100%;
     padding: 1%;
 
@@ -77,11 +78,7 @@ body { letter-spacing: 0.04em; }
 }
 
 .sideBarContainer.left{
-    left: -40%;
-    -webkit-border-top-right-radius: 10px;
-    -webkit-border-bottom-right-radius: 10px;
-    -moz-border-radius-topright: 10px;
-    -moz-border-radius-bottomright: 10px;
+    left: -100px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -92,17 +89,40 @@ body { letter-spacing: 0.04em; }
     left: 0;
 }
 .sideBarContainer.right{
-    right: -40%;
-    -webkit-border-top-left-radius: 10px;
-    -webkit-border-bottom-left-radius: 10px;
-    -moz-border-radius-topleft: 10px;
-    -moz-border-radius-bottomleft: 10px;
+    right:-100px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 .sideBarContainer.right.openBtn{
     right: 0;
 }
+
+.sideBarContainer > button{
+    transition:.2s;
+    font-size:.8em;
+    border:0;
+    background:rgba(0,0,0,.5);
+    color:#FFF;
+    padding:1.1em .8em;
+    cursor:pointer;
+}
+
+/* beratung button
+*/
+.sideBarContainer .beratung{
+
+}
+
+.sideBarContainer .beratung:hover{
+    background:rgba(0,0,0,.7);
+}
+
+.sideBarContainer .beratung > i{
+    display: inline-block;
+    font-size:2.8em;
+    margin-bottom:5px;
+}
+
 
 .titleLabel{ padding:8px 0 6px 10px; font-size:1.4em; }
 .sskDescriptionLabel{ padding:0 0 8px 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -146,10 +166,10 @@ body { letter-spacing: 0.04em; }
 
 .btn {
     display: inline-block;
-    height: 100%;
-    margin: 0;
+    height:50%;
+    margin:12px;
     padding: 0;
-    width:3em;
+    width:1.5em;
     cursor: pointer;
     border: 0;
     font-size: 1.1em;
@@ -594,6 +614,7 @@ body { letter-spacing: 0.04em; }
     display: inline-block;
 }
 
+
 /* remove dotted border when clicking on buttons */
 button::-moz-focus-inner,
 button:focus{
@@ -872,7 +893,7 @@ box-shadow:  0px 1px 0px rgba(0, 0, 0, 0.3);
     background-image: url(../images/kalturaLogo.png);
 }
 .playPauseBtn {
-    width: 3.3em;
+    width:2.6em;
 }
 /*.playPauseBtn,.fullScreenBtn {
     border-right: 1px solid rgba(0,0,0,0.7);
