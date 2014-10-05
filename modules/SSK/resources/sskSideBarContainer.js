@@ -23,14 +23,15 @@
             this.bind('addLayoutContainer', function () {
                 _this.getPlayer().getVideoHolder().before(_this.getComponent());
             });
-            this.bind('layoutBuildDone ended', function () {
-                _this.show();
-            });
-            this.bind('showPlayerControls', function (e, data) {
-                _this.show();
-            });
-            this.bind('hidePlayerControls', function () {
+
+            // Hide
+            this.bind('sskHideControls', function() {
                 _this.hide();
+            });
+
+            // Show
+            this.bind('sskShowControls', function() {
+                _this.show();
             });
         },
         show: function () {

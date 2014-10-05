@@ -18,7 +18,9 @@ return array(
          * We need to have mw.EmbedPlayer dependency for our skin
          * So that the Core CSS will load before Skin CSS
          **/
-        'dependencies' => 'mw.EmbedPlayer',
+        'dependencies' => array(
+            'mw.Playlist'
+        ),
         'styles' => array(
             'skins/ssk/css/layout.css',
             'skins/ssk/css/icons.css',

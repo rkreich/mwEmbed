@@ -90,10 +90,10 @@
 .icon-expand:before {
 	content: "\e600";
 }
-.icon-redo:before {
+.icon-info:before {
 	content: "\e602";
 }
-.icon-users:before {
+.icon-advice:before {
 	content: "\e603";
 }
 .icon-angle-left:before {

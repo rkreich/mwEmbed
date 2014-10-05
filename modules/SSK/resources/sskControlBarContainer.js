@@ -6,7 +6,8 @@
 
     var locked = false,
         playerHoverDisabled = true,
-        $sourceSelector;
+        $sourceSelector,
+        hideControls = false;
 
     mw.PluginManager.add('controlBarContainer', mw.KBasePlugin.extend({
 
@@ -27,37 +28,15 @@
             this.bind('addLayoutContainer', function () {
                 _this.getPlayer().getInterface().append(_this.getComponent());
             });
-            this.bind('showInlineDownloadLink', function () {
+
+            // Hide
+            this.bind('sskHideControls', function() {
                 _this.hide();
             });
-            this.bind('layoutBuildDone ended', function () {
-                _this.show();
-            });
 
-            // Show / Hide controlbar on hover
-            this.bind('showPlayerControls', function (e, data) {
+            // Show
+            this.bind('sskShowControls', function() {
                 _this.show();
-            });
-            this.bind('hidePlayerControls', function () {
-                if (!locked)
-                    _this.hide();
-            });
-            this.bind( 'onComponentsHoverDisabled', function(){
-                playerHoverDisabled = true;
-            });
-            this.bind( 'onComponentsHoverEnabled', function(){
-                playerHoverDisabled = false;
-            });
-
-            // Integration with source selector to keep control bar active when menu is open
-            this.bind('onFocusOutOfIframe', function () {
-                locked = false;
-                if (playerHoverDisabled)
-                    return;
-                _this.hide();
-            });
-            this.bind('toggleSourceSelector', function() {
-                locked = (_this.getSourceSelector().is(':visible'));
             });
         },
         show: function () {
