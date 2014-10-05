@@ -1,1 +1,101 @@
-.sskEndScreen .wrapper{width:40%;height:280px;position:absolute;bottom:0;left:0;right:0;top:0;margin:auto}.sskEndScreen .wrapper>.actions{text-align:justify;height:70px;width:100%;padding:0;margin:0 0 2% 0}.sskEndScreen .wrapper>.actions::after{content:'';display:inline-block;width:100%}.sskEndScreen .wrapper>.actions>li{display:inline-block;height:100%;width:32%}.sskEndScreen .wrapper>.actions>li>a{display:block;height:100%;background:#666;background:rgba(50,50,50,0.5);color:#FFF;text-align:center;cursor:pointer;transition:.15s}.sskEndScreen .wrapper>.actions>li>a>i{display:block;font-size:3em;line-height:50px}.sskEndScreen .wrapper>.actions>li>a:hover{background:#333}.sskEndScreen .wrapper>.arrow{position:absolute;top:50%;height:50px;width:50px;line-height:50px;border-radius:50%;background:#666;background:rgba(50,50,50,0.5);color:#FFF;text-align:center;font-size:2.5em;cursor:pointer;transition:.15s}.sskEndScreen .wrapper>.arrow.prev{left:-2em;text-indent:-0.1em}.sskEndScreen .wrapper>.arrow.next{right:-2em;text-indent:0.1em}.sskEndScreen .wrapper>.arrow:hover{background:#333;box-shadow:0 0 0 6px #333}.sskEndScreen .wrapper .carousel{white-space:nowrap;overflow:hidden;height:250px}.sskEndScreen .wrapper .carousel>a{display:inline-block;width:100%;height:100%;white-space:normal;overflow:hidden;position:relative;transition:.2s ease-out}.sskEndScreen .wrapper .carousel>a>img{display:block;width:100%}.sskEndScreen .wrapper .carousel>a>div{background:#666;background:rgba(50,50,50,0.5);color:#FFF;padding:1em;position:absolute;bottom:0;left:0;right:0;transition:.1s ease-out}.sskEndScreen .wrapper .carousel>a p{margin:0}.sskEndScreen .wrapper .carousel>a:hover>div{padding:2em 1em;background:rgba(0,0,0,0.55)}
+.sskEndScreen .wrapper {
+  width: 40%;
+  height: 280px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin: auto; }
+  .sskEndScreen .wrapper > .actions {
+    text-align: justify;
+    height: 70px;
+    width: 100%;
+    padding: 0;
+    margin: 0 0 2% 0; }
+    .sskEndScreen .wrapper > .actions::after {
+      content: '';
+      display: inline-block;
+      width: 100%; }
+    .sskEndScreen .wrapper > .actions > li {
+      display: inline-block;
+      height: 100%;
+      width: 32%; }
+      .sskEndScreen .wrapper > .actions > li > a {
+        display: block;
+        height: 100%;
+        background: #666;
+        background: rgba(50, 50, 50, 0.5);
+        color: #FFF;
+        text-align: center;
+        cursor: pointer;
+        transition: .15s;
+        text-decoration: none; }
+        .sskEndScreen .wrapper > .actions > li > a > i {
+          display: block;
+          font-size: 3em;
+          line-height: 50px; }
+        .sskEndScreen .wrapper > .actions > li > a:hover {
+          background: #333; }
+  .sskEndScreen .wrapper > .arrow {
+    user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    position: absolute;
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    background: #666;
+    background: rgba(50, 50, 50, 0.5);
+    color: #FFF;
+    text-align: center;
+    font-size: 2.5em;
+    cursor: pointer;
+    transition: .15s; }
+    .sskEndScreen .wrapper > .arrow.prev {
+      left: -2em;
+      text-indent: -0.1em; }
+    .sskEndScreen .wrapper > .arrow.next {
+      right: -2em;
+      text-indent: 0.1em; }
+    .sskEndScreen .wrapper > .arrow:hover {
+      background: #333;
+      box-shadow: 0 0 0 6px #333; }
+  .sskEndScreen .wrapper .carousel {
+    white-space: nowrap;
+    overflow: hidden; }
+    .sskEndScreen .wrapper .carousel > a {
+      display: inline-block;
+      width: 100%;
+      white-space: normal;
+      overflow: hidden;
+      position: relative;
+      transition: .2s ease-out; }
+      .sskEndScreen .wrapper .carousel > a > div.push16x9 {
+        margin-top: 56.25%; }
+      .sskEndScreen .wrapper .carousel > a > img {
+        display: block;
+        position: absolute;
+        top: 0;
+        width: 100%; }
+      .sskEndScreen .wrapper .carousel > a > div.text {
+        background: #666;
+        background: rgba(50, 50, 50, 0.5);
+        color: #FFF;
+        padding: 1em;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transition: .1s ease-out; }
+      .sskEndScreen .wrapper .carousel > a p {
+        margin: 0; }
+      .sskEndScreen .wrapper .carousel > a:hover > div.text {
+        padding: 2em 1em;
+        background: rgba(0, 0, 0, 0.55); }
+
+/*# sourceMappingURL=sskEndScreen.css.map */

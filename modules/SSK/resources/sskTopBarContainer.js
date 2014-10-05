@@ -16,16 +16,15 @@
             this.bind('addLayoutContainer', function () {
                 _this.getPlayer().getVideoHolder().before(_this.getComponent());
             });
-            this.bind('layoutBuildDone ended', function () {
-                _this.show();
+
+            // Hide
+            this.bind('sskHideControls', function() {
+                _this.hide();
             });
 
-            // Show / Hide controlbar on hover
-            this.bind('showPlayerControls', function (e, data) {
+            // Show
+            this.bind('sskShowControls', function() {
                 _this.show();
-            });
-            this.bind('hidePlayerControls', function () {
-                _this.hide();
             });
         },
         show: function () {
