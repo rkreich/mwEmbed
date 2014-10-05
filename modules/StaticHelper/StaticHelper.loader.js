@@ -18,7 +18,7 @@
             if (playerData.playerConfig.plugins.playlistAPI)
                 playlistPlugin = playerData.playerConfig.plugins.playlistAPI;
 
-            playlistPlugin.autoInsert = true;
+            playlistPlugin.autoInsert = false;
             playlistPlugin.autoContinue = true;
             playlistPlugin.kpl0Id = playerData.playlistId;
             playerData.playerConfig.plugins.playlistAPI = playlistPlugin;
@@ -36,34 +36,36 @@
     $(mw).bind('KalturaSupportNewPlayer', function (event, embedPlayer) {
         embedPlayer.bindHelper('startPlayerBuildOut', function (event, callback) {
             if (playerData.playlistId && !playerData.playlistResult) {
+
                 var playlistId = playerData.playlistId;
-                var playlistObject = {};
-                playlistObject[playlistId] = {
-                    id: playlistId
-                };
-                embedPlayer.kalturaPlaylistData = playlistObject;
-                callback();
-                /*
-                 var kapi = mw.kApiGetPartnerClient(embedPlayer.kwidgetid);
-                 var requestObject = {
-                 service: 'playlist',
-                 action: 'execute',
+                /*var playlistObject = {};
+                 playlistObject[playlistId] = {
                  id: playlistId
                  };
-                 kapi.doRequest(requestObject, function(result) {
-                 var playlistObject = {};
-                 var data = result[0].slice(1,1);
-                 //alert(data);
-                 playlistObject[playlistId] = {
-                 id: playlistId,
-                 name: "Most Recent",
-                 content: "1_rn2r79tx",
-                 items: data
-                 };
                  embedPlayer.kalturaPlaylistData = playlistObject;
-                 callback();
-                 });
-                 */
+                 callback();*/
+
+                var kapi = mw.kApiGetPartnerClient(embedPlayer.kwidgetid);
+
+                var requestObject = {
+                    service: 'playlist',
+                    action: 'execute',
+                    id: playlistId
+                };
+                kapi.doRequest(requestObject, function (result) {
+                    var playlistObject = {};
+                    var data = result[0];
+                    playlistObject[playlistId] = {
+                        id: playlistId,
+                        items: data
+                    };
+                    embedPlayer.kalturaPlaylistData = playlistObject;
+
+                    // we must set the first playlist entry id, otherwise the player will not be loaded correctly
+                    embedPlayer.kentryid = data.length ? data[0].id : -1;
+                    callback();
+                });
+
             }
             else {
                 callback();

@@ -16,6 +16,11 @@ return array(
         'dependencies'      => 'mw.KBaseComponent',
         'kalturaPluginName' => 'sskDescriptionLabel',
     ),
+    "sskControlsManager" => array(
+        'scripts'           => "resources/sskControlsManager.js",
+        'dependencies'      => 'mw.KBaseComponent',
+        'kalturaPluginName' => 'sskControlsManager',
+    ),
     "sskTopBarContainer" => array(
         'scripts'           => "resources/sskTopBarContainer.js",
         'dependencies'      => 'mw.KBaseComponent',

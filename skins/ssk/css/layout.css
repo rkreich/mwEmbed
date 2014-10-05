@@ -107,24 +107,18 @@ body { letter-spacing: 0.04em; }
     cursor:pointer;
 }
 
-/* beratung button
-*/
-.sideBarContainer .beratung{
-
-}
-
-.sideBarContainer .beratung:hover{
+.sideBarContainer .advice:hover{
     background:rgba(0,0,0,.7);
 }
 
-.sideBarContainer .beratung > i{
+.sideBarContainer .advice > i{
     display: inline-block;
     font-size:2.8em;
     margin-bottom:5px;
 }
 
 
-.titleLabel{ padding:8px 0 6px 10px; font-size:1.4em; }
+.titleLabel{ padding:8px 0 6px 10px; font-size:1.4em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .sskDescriptionLabel{ padding:0 0 8px 10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 .descriptionLabel{

@@ -16,7 +16,7 @@
 
         getComponent: function () {
             if (!this.$el) {
-                this.$el = $('<button>Beratung</button>').addClass('beratung').prepend('<i class="icon-users"></i>');
+                this.$el = $('<button>Beratung</button>').addClass('advice').prepend('<i class="icon-advice"></i>');
             }
             return this.$el;
         }

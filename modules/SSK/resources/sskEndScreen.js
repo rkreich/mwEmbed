@@ -1,50 +1,154 @@
 (function (mw, $) {
     "use strict";
 
+    var infoLink = null;
+    var adviceLink = null;
+
     mw.PluginManager.add('sskEndScreen', mw.KBaseScreen.extend({
 
         defaultConfig: {
             order: 4,
-            templatePath: '../SSK/resources/sskEndScreen.tmpl.html'
+            templatePath: '../SSK/resources/sskEndScreen.tmpl.html',
+            itemsLimit: 10,
+            adviceMetadataField: null,
+            infoMetadataField: null,
+            adviceTarget: '_blank',
+            infoTarget: '_blank',
+            playlistId: '_KDP_CTXPL'
         },
 
         setup: function () {
             var _this = this;
+            this.templateData = {};
+            this.templateData.items = [];
             this.bind('onEndedDone', function () {
                 _this.showScreen();
+                _this.bindButtons();
             });
+            this.bind('updateLayout', $.proxy(this.onUpdateLayout, this));
+            this.loadData();
+        },
+
+        onUpdateLayout: function() {
+            if (!this.$screen)
+                return;
+
+            var wrapperHeight = this.$screen.find('.actions').height() + this.$screen.find('.carousel').height();
+            this.$screen.find('.wrapper').height(wrapperHeight);
+        },
+
+        loadData: function() {
+            this.loadRelatedPlaylist();
+            this.loadMetadata();
+        },
+
+        reloadData: function() {
+            infoLink = null;
+            adviceLink = null;
+            this.templateData.items = [];
+            this.loadData();
+        },
+
+        loadRelatedPlaylist: function() {
+            var _this = this;
+            var requestObject = {
+                'service': 'playlist',
+                'action': 'execute',
+                'id': this.getConfig('playlistId'),
+                'filter:objectType': 'KalturaMediaEntryFilterForPlaylist',
+                'filter:idNotIn': this.getPlayer().kentryid,
+                'filter:limit': this.getConfig('itemsLimit'),
+                'playlistContext:objectType': 'KalturaEntryContext',
+                'playlistContext:entryId': this.getPlayer().kentryid
+            };
+
+            this.getKalturaClient().doRequest(requestObject, $.proxy(this.onPlaylistResponse, this));
+        },
+
+        onPlaylistResponse: function(data) {
+            if (!data || (data.code && data.message )) {
+                this.log('Error getting playlist items: ' + data.message);
+                return;
+            }
+            this.templateData.items = data;
+        },
+
+        loadMetadata: function() {
+            var requestObject = {
+                'service': 'metadata_metadata',
+                'action': 'list',
+                'filter:objectType': 'KalturaMetadataFilter',
+                'filter:metadataObjectTypeEqual': 1,
+                'filter:objectIdEqual': this.getPlayer().kentryid
+            };
+            this.getKalturaClient().doRequest(requestObject, $.proxy(this.onLoadMetadataResponse, this));
+        },
+
+        onLoadMetadataResponse: function(data) {
+            if (!data || (data.code && data.message )) {
+                this.log('Error getting metadata: ' + data.message);
+                return;
+            }
+            if (data.objects && data.objects.length > 0) {
+                var xmlDoc = $.parseXML(data.objects[0].xml);
+                var $xml = $(xmlDoc);
+                infoLink = $xml.find(this.getConfig('infoMetadataField')).text();
+                adviceLink = $xml.find(this.getConfig('adviceMetadataField')).text();
+            }
         },
 
         showScreen: function () {
             var that = this;
             this._super(); // this is an override of showScreen in mw.KBaseScreen.js - call super
 
+            this.$screen.find('a.info, a.advice').hide(); // hide by default
+            var carousel = this.carousel();
             this.$screen.off().on('click.arrows', '.arrow', function(){
-                that.carousel( this.className.indexOf('next') > -1 ? 'next' : 'prev' );
+                carousel( this.className.indexOf('next') > -1 ? 'next' : 'prev' );
+            });
+
+            if (infoLink)
+                this.$screen.find('a.info')
+                    .show()
+                    .attr('href', infoLink)
+                    .attr('target', this.getConfig('infoTarget'));
+
+            if (adviceLink)
+                this.$screen.find('a.advice')
+                    .show()
+                    .attr('href', adviceLink)
+                    .attr('target', this.getConfig('adviceTarget'));
+
+            this.onUpdateLayout();
+        },
+
+        bindButtons: function() {
+            var that = this;
+            this.$screen.find('a.repeat').click(function() {
+                that.getPlayer().replay();
+            });
+            this.$screen.find('.carousel > a').click(function() {
+                var entryId = $(this).data('entry-id');
+                that.getPlayer().sendNotification('changeMedia', {'entryId': entryId});
+                that.bind('onChangeMediaDone', function(){
+                    that.getPlayer().play();
+                    that.unbind('onChangeMediaDone');
+                    that.reloadData.call(that);
+                });
             });
         },
 
-        carousel : (function(){
+        carousel: (function(){
             var itemToMove,
                 img, locked, children,
                 carousel,
                 width;
 
-            return function(direction){
+            function slide(direction){
                 if( locked )
                     return;
 
                 locked = true;
-
-                if( !carousel ){
-                    carousel = $('.sskEndScreen .carousel')[0];
-                    children = carousel.children;
-                    width = children[0].clientWidth;
-
-                    for( var i=0; i < children.length; i++ ){
-                        lazyload( children[i].getElementsByTagName('img')[0] );
-                    }
-                }
 
                 // do nothing if there are no items
                 if( carousel.children.length < 2 )
@@ -72,6 +176,16 @@
                     }, 220);
             }
 
+            function init() {
+                carousel = $('.sskEndScreen .carousel')[0];
+                children = carousel.children;
+                width = children[0].clientWidth;
+
+                for( var i=0; i < children.length; i++ ){
+                    lazyload( children[i].getElementsByTagName('img')[0] );
+                }
+            }
+
             function lazyload(img){
                 // lazy load image
                 var lazy = img.getAttribute('data-src');
@@ -82,7 +196,11 @@
                     lazy = null;
                 }
             }
-        })(),
+
+            init();
+
+            return slide;
+        })
 
     }));
 

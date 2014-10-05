@@ -10,8 +10,9 @@ $host     = _getOption($options ,'host', true);
 $widgetId = _getOption($options ,'wid', true);
 $uiConfId = _getOption($options ,'uiconfid', true);
 $playerId = 'kplayer';
-$isDebug  = _getOption($options ,'debug', false);
-
+$isDebug  = _getOption($options ,'debug', false, false);
+$isDebug = !is_null($isDebug);
+$isDebug = true;
 
 /**
  * Set global variables
@@ -20,7 +21,7 @@ $_GET['wid']              = $widgetId;
 $_GET['uiconf_id']        = $uiConfId;
 $_GET['entry_id']         = '';
 $_GET['playerId']         = 'kplayer';
-$_GET['debug']            = 'true';
+$_GET['debug']            = $isDebug ? 'true' : null;
 $_GET['forceMobileHTML5'] = 'true';
 
 foreach ($_GET as $key => $value) {
@@ -43,9 +44,13 @@ $loadJSInlineFilename  = 'startup' . $fileSuffix . '.js';
 $loadModulesJsFilename     = 'modules' . $fileSuffix . '.js';
 
 
-require(dirname(__FILE__) . '/includes/DefaultSettings.php');
-require(dirname(__FILE__) . '/includes/MwEmbedWebStartSetup.php');
+require_once(dirname(__FILE__) . '/includes/DefaultSettings.php');
+require_once(dirname(__FILE__) . '/includes/MwEmbedWebStartSetup.php');
 
+// override the local settings
+$wgEnableScriptDebug = $isDebug;
+$wgResourceLoaderDebug = $isDebug;
+$wgUseFileCache = false;
 
 /**
  *
@@ -86,7 +91,7 @@ foreach ($matches[1] as $srcInclude) {
 }
 
 // the start up inline script
-$output = preg_replace('/writeScript\("[^"]+"\)/', 'writeScript("'.$loadJSInlineFilename.'")', $output);
+$output = preg_replace('/writeScript\(\s?"[^"]+"\)/m', 'writeScript("'.$loadJSInlineFilename.'")', $output);
 
 // find the iframe data
 preg_match('/window.kalturaIframePackageData = ([^;]+)/', $output, $matches);
@@ -125,12 +130,48 @@ file_put_contents($outputFolder . '/' . $mwEmbedFrameFilename, $output);
  * modules.js - TODO
  *
  */
+/*
+$moduleList = array( 'mw.MwEmbedSupport' );
+$kalturaSupportModules = array();
+$moduleDir = realpath(dirname( __FILE__)).'/modules/';
+foreach( $wgMwEmbedEnabledModules as $moduleName ){
+    $modListPath = $moduleDir . '/' . $moduleName . '/' . $moduleName . '.php';
+    if( is_file( $modListPath) ){
+        $kalturaSupportModules = array_merge( $kalturaSupportModules,
+            include( $modListPath )
+        );
+    }
+}
+$playerConfig = $container['uiconf_result']->getPlayerConfig();
+foreach ($kalturaSupportModules as $name => $module) {
+    if (isset($module['kalturaLoad']) && $module['kalturaLoad'] == 'always') {
+        $moduleList[] = $name;
+    }
+    // Check if the module has a kalturaPluginName and load if set in playerConfig
+    if (isset($module['kalturaPluginName'])) {
+        if (is_array($module['kalturaPluginName'])) {
+            foreach ($module['kalturaPluginName'] as $subModuleName) {
+                if (isset($playerConfig['plugins'][$subModuleName])) {
+                    $moduleList[] = $name;
+                    continue;
+                }
+            }
+        } else if (isset($playerConfig['plugins'][$module['kalturaPluginName']])) {
+            $moduleList[] = $name;
+        }
+    }
+}
 
-$modules =  ["mw.MwEmbedSupport","mw.KalturaIframePlayerSetup","mw.KWidgetSupport","keyboardShortcuts","controlBarContainer","topBarContainer","sideBarContainer","largePlayBtn","playPauseBtn","fullScreenBtn","scrubber","volumeControl","currentTimeLabel","durationLabel","sourceSelector","related","acCheck","acPreview","carouselPlugin","liveStream","titleLabel","statisticsPlugin","mw.StaticHelper","mw.EmbedPlayer","kdark"];
+$moduleList[] = 'mw.EmbedPlayer';
+$skinName = (isset($playerConfig['layout']['skin'] ) && $playerConfig['layout']['skin'] != "") ? $playerConfig['layout']['skin'] : null;
+if( $skinName ){
+    $moduleList[] = $skinName;
+}
+
 $fauxRequest    = new WebRequest();
 $resourceLoader = new MwEmbedResourceLoader();
 $modulesToLoad  = array();
-foreach ($modules as $name) {
+foreach ($moduleList as $name) {
     $module = $resourceLoader->getModule($name);
     $loader = $module->getLoaderScript();
     if ($loader === false) {
@@ -140,8 +181,8 @@ foreach ($modules as $name) {
 
 $context        = new MwEmbedResourceLoaderContext($resourceLoader, $fauxRequest);
 $output         = $resourceLoader->makeModuleResponse($context, $modulesToLoad);
-//file_put_contents($outputFolder . '/' . $loadModulesJsFilename, $output);
-
+file_put_contents($outputFolder . '/' . $loadModulesJsFilename, $output);
+*/
 
 
 /**
@@ -162,6 +203,8 @@ foreach ($modules as $name ) {
         $missing[] = $name;
     }
 }
+$fauxRequest    = new WebRequest();
+$context        = new MwEmbedResourceLoaderContext($resourceLoader, $fauxRequest);
 $output = $resourceLoader->makeModuleResponse($context, $modulesToLoad, $missing);
 file_put_contents($outputFolder . '/' . $loadJSInlineFilename, $output);
 
