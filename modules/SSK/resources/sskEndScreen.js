@@ -101,7 +101,7 @@
             var that = this;
             this._super(); // this is an override of showScreen in mw.KBaseScreen.js - call super
 
-            this.$screen.find('a.info, a.advice').hide(); // hide by default
+            this.$screen.find('a.info, a.advice').css('visibility', 'hidden'); // hide by default
             var carousel = this.carousel();
             this.$screen.off().on('click.arrows', '.arrow', function(){
                 carousel( this.className.indexOf('next') > -1 ? 'next' : 'prev' );
@@ -109,13 +109,13 @@
 
             if (infoLink)
                 this.$screen.find('a.info')
-                    .show()
+                    .css('visibility', '')
                     .attr('href', infoLink)
                     .attr('target', this.getConfig('infoTarget'));
 
             if (adviceLink)
                 this.$screen.find('a.advice')
-                    .show()
+                    .css('visibility', '')
                     .attr('href', adviceLink)
                     .attr('target', this.getConfig('adviceTarget'));
 
