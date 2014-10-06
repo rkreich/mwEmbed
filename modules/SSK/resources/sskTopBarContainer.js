@@ -15,16 +15,12 @@
             // Register our container
             this.bind('addLayoutContainer', function () {
                 _this.getPlayer().getVideoHolder().before(_this.getComponent());
+                _this.show();
             });
 
             // Hide
-            this.bind('sskHideControls', function() {
+            this.bind('onplay', function() {
                 _this.hide();
-            });
-
-            // Show
-            this.bind('sskShowControls', function() {
-                _this.show();
             });
         },
         show: function () {
