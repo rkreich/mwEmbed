@@ -8,8 +8,6 @@
         },
 
         setup: function () {
-            if (this.getPlayer().playlist) // don't enable on playlists
-                return;
             this.addBindings();
         },
 
@@ -18,7 +16,10 @@
 
         getComponent: function () {
             if (!this.$el) {
-                this.$el = $('<button>Beratung</button>').addClass('advice').prepend('<i class="icon-advice"></i>');
+                // buttons onclick is being set from sskEndScreen plugin
+                this.$el = $('<a class="button">Beratung</a>').addClass('advice').prepend('<i class="icon-advice"></i>');
+                if (this.getPlayer().playlist) // don't show in playlist mode
+                    this.$el.hide();
             }
             return this.$el;
         }
