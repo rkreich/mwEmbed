@@ -18,6 +18,8 @@
         },
 
         setup: function () {
+            if (this.getPlayer().playlist) // don't enable end screen on playlists
+                return;
             var _this = this;
             this.templateData = {};
             this.templateData.items = [];
