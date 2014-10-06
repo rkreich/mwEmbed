@@ -96,6 +96,13 @@
                 var $xml = $(xmlDoc);
                 infoLink = $xml.find(this.getConfig('infoMetadataField')).text();
                 adviceLink = $xml.find(this.getConfig('adviceMetadataField')).text();
+
+                // update the sidebar container with the advice link
+                if (adviceLink) {
+                    $('.sideBarContainer > a.advice')
+                        .attr('href', adviceLink)
+                        .attr('target', this.getConfig('adviceTarget'));
+                }
             }
         },
 
