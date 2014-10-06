@@ -8,6 +8,8 @@
         },
 
         setup: function () {
+            if (this.getPlayer().playlist) // don't enable on playlists
+                return;
             this.addBindings();
         },
 

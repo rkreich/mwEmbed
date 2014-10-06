@@ -63,7 +63,7 @@ body { letter-spacing: 0.04em; }
 
 .sideBarContainer {
     position: absolute;
-    top:60px;
+    top: 0;
     width: 100px;
     z-index: 100;
     box-sizing:border-box;
