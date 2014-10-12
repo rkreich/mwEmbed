@@ -72,7 +72,7 @@ body { letter-spacing: 0.04em; }
     -ms-transition: left 0.15s ease-in, right 0.15s ease-in;
     transition: left 0.15s ease-in, right 0.15s ease-in;
     height: 100%;
-    padding: 1%;
+    padding: 10px;
 
     background: transparent;
 }
@@ -654,6 +654,7 @@ button:focus{
     color: #555;
     border-radius: 2px;
     padding: 2px 5px;
+    white-space: nowrap;
 }
 
 .ui-tooltip .arrow {
@@ -733,8 +734,8 @@ button:focus{
 }
 
 .btn {
-    //-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    //filter: alpha(opacity=100);
+    /*-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);*/
     opacity: 1;
     background-color: transparent;
     color: #ccc;
