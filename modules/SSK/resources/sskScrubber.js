@@ -38,23 +38,22 @@
 
 			// check if parent is controlsContainer
 			if( this.getConfig('parent') == 'controlsContainer' ){
-				// need to add
-				this.bind('updateComponentsVisibilityStart', function(){
-					// take minWidth, so that normal display Importance rules work:
-					//_this.getComponent().css('width', _this.getConfig('minWidth') );
-				})
-				this.bind( 'updateComponentsVisibilityDone', function(){
-					var $container = _this.getComponent().parent();
-					// get remaining space:
-					var compSize = _this.embedPlayer.layoutBuilder.getComponentsWidthForContainer(
-							$container
-					) - _this.getComponent().width();
-					var targetSize = $container.width() - compSize;
-					if( targetSize <  _this.getConfig('minWidth') ){
-						targetSize = _this.getConfig('minWidth');
-					}
-					_this.getComponent().css('width', ( targetSize ) + 'px' );
-				});
+                this.bind('updateComponentsVisibilityStart', function(){
+                    // take minWidth, so that normal display Importance rules work:
+                    _this.getComponent().css('width', _this.getConfig('minWidth') );
+                });
+                this.bind('updateComponentsVisibilityDone', function(){
+                    var $container = _this.getComponent().parent();
+                    // get remaining space:
+                    var compSize = _this.embedPlayer.layoutBuilder.getComponentsWidthForContainer(
+                            $container
+                        ) - _this.getComponent().width();
+                    var targetSize = $container.width() - compSize;
+                    if( targetSize <  _this.getConfig('minWidth') ){
+                        targetSize = _this.getConfig('minWidth');
+                    }
+                    _this.getComponent().css('width', ( targetSize ) + 'px' );
+                });
 			}
 			// Update buffer bar
 			this.bind( 'updateBufferPercent', function( e, bufferedPercent ){
