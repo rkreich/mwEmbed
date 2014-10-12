@@ -426,12 +426,14 @@ body { letter-spacing: 0.04em; }
     border-style: dotted dotted solid;
     border-width:0 0 18px 36px;
     border-color: transparent transparent rgba(255,255,255,.3);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 }
 .volumeControl > div{
     position: absolute;
     bottom: -18px;
     left:-36px;
     border-color: transparent #FFF #FFF transparent;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 }
 
 

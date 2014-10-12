@@ -63,8 +63,8 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 
 		this.prepare();
 
-		this.DOM.elm.on('mousedown', this.onmousedown.bind(this));
-        $(document).on('mouseup', this.onmouseup.bind(this));
+		this.DOM.elm.on('mousedown', $.proxy(this.onmousedown, this));
+        $(document).on('mouseup', $.proxy(this.onmouseup, this));
 
 		this.bind('volumeChanged', function(e, percent){
 			_this.updateVolumeUI( percent );
@@ -75,7 +75,7 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 	// event callbacks
 	onmousedown : function(e){
 	    this.calcVolume(e);
-		this.DOM.elm.on('mousemove', this.calcVolume.bind(this));
+		this.DOM.elm.on('mousemove', $.proxy(this.calcVolume, this));
 	},
 
 	onmouseup : function(){
@@ -89,17 +89,17 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 
 	    percent = percent.toFixed(2);
 
+        if( percent > .95 )
+            percent = 1;
+        if( percent < 0.15)
+            percent = 0;
+
 	  	this.updateVolumeUI( percent );
 	  	this.getPlayer().setVolume( percent , true );
 	  	this.saveVolume();
 	},
 
 	updateVolumeUI: function( percent ){
-		if( percent > .95 )
-			percent = 1;
-		if( percent < 0.05)
-			percent = 0;
-
 		var newBorderWidth = [this.vars.border[0] * percent, this.vars.border[1] * percent];
 
 		this.DOM.slider[0].style.borderWidth = "0 0 "  + newBorderWidth[1] + "px " + newBorderWidth[0] + "px";
