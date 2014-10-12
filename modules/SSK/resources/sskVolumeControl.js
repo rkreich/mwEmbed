@@ -19,7 +19,7 @@ mw.PluginManager.add( 'sskVolumeControl', mw.KBaseComponent.extend({
 
 
 	setup: function( embedPlayer ) {
-		this.bind('layoutBuildDone', this.addBindings.bind(this));
+		this.bind('layoutBuildDone', $.proxy(this.addBindings, this));
 		//this.addBindings();
 
 		var _this = this;
