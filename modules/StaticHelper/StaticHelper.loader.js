@@ -12,6 +12,9 @@
         if (uri.query.entry_id)
             playerData.entryId = uri.query.entry_id;
 
+        if (uri.query.proxy)
+            playerData.proxy = uri.query.proxy;
+
         if (uri.query.playlist_id) {
             playerData.playlistId = uri.query.playlist_id;
             var playlistPlugin = {};
@@ -34,6 +37,11 @@
     });
 
     $(mw).bind('KalturaSupportNewPlayer', function (event, embedPlayer) {
+        // if proxy was provided, switch the doApiRequest function on the prototype of
+        // mw.KApi to use our local function that supports proxy
+        if (playerData.proxy)
+            mw.KApi.prototype.doApiRequest = doApiRequest;
+
         embedPlayer.bindHelper('startPlayerBuildOut', function (event, callback) {
             if (playerData.playlistId && !playerData.playlistResult) {
 
@@ -72,4 +80,35 @@
             }
         });
     });
+
+    function doApiRequest(param, callback){
+        var _this = this;
+        // Remove service tag ( hard coded into the api url )
+        var serviceType = param['service'];
+        delete param['service'];
+
+        // Add the signature ( if not a session init )
+        if( serviceType != 'session' ){
+            param['kalsig'] = _this.getSignature( param );
+        }
+
+        param.format = 1;
+
+        // Build the request url with sorted params:
+        var requestURL = _this.getApiUrl( serviceType ) + '&' + $.param( param );
+
+        $.ajax({
+            url: playerData.proxy,
+            data: {
+                p: requestURL
+            },
+            success: function (data) {
+                if(callback) {
+                    callback(data);
+                    callback = null;
+                }
+            }
+        });
+        mw.log("kAPI:: doApiRequest: " + requestURL);
+    }
 })(window.mediaWiki, window.jQuery, window.kalturaIframePackageData);
