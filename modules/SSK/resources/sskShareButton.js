@@ -1,11 +1,10 @@
 (function (mw, $, kWidget) {
     "use strict";
 
-    mw.PluginManager.add('sskBeratungButton', mw.KBaseComponent.extend({
+    mw.PluginManager.add('sskShareButton', mw.KBaseComponent.extend({
 
         defaultConfig: {
-            parent: 'sideBarContainer',
-            insertMode: 'firstChild'
+            parent: 'sideBarContainer'
         },
 
         setup: function () {
@@ -18,9 +17,7 @@
         getComponent: function () {
             if (!this.$el) {
                 // buttons onclick is being set from sskEndScreen plugin
-                this.$el = $('<a class="button">Beratung</a>').addClass('advice').prepend('<i class="icon-advice"></i>');
-                if (this.getPlayer().playlist) // don't show in playlist mode
-                    this.$el.hide();
+                this.$el = $('<a class="button">Teilen</a>').addClass('share').prepend('<i class="icon-share"></i>');
             }
             return this.$el;
         }

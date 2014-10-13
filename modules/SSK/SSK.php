@@ -53,4 +53,9 @@ return array(
         'dependencies'      => 'mw.KBaseComponent',
         'kalturaPluginName' => 'sskBeratungButton',
     ),
+    "sskShareButton" => array(
+        'scripts'           => "resources/sskShareButton.js",
+        'dependencies'      => 'mw.KBaseComponent',
+        'kalturaPluginName' => 'sskShareButton',
+    ),
 );
