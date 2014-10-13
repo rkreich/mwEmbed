@@ -82,6 +82,7 @@
             "playlistId": "0_22vxd3w6"
         },
         "sskBeratungButton": {"plugin": true},
+        "sskShareButton": {"plugin": true},
         "staticHelper": {"plugin": true},
         "playlistAPI": {
             "plugin": true,
