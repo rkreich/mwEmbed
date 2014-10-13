@@ -24,7 +24,7 @@
 
         > .actions{ text-align:justify; height:70px; width:100%; padding:0; margin:0 0 2% 0;
             &::after{ content:''; display:inline-block; width:100%; }
-            > li{ display:inline-block; height:100%; width:32%;
+            > li{ display:inline-block; height:100%; width:23%;
                 > a{ display:block; height:100%; @include bgColor(); color:#FFF; text-align:center; cursor:pointer; transition:.15s;
                     text-decoration: none;
                     > i{ display:block; font-size:3em; line-height:50px; }

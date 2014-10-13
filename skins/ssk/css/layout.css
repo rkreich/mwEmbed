@@ -109,13 +109,14 @@ body { letter-spacing: 0.04em; }
     cursor:pointer;
     text-align: center;
     text-decoration: none;
+    margin-bottom: 10px;
 }
 
-.sideBarContainer .advice:hover{
+.sideBarContainer .button:hover{
     background:rgba(0,0,0,.7);
 }
 
-.sideBarContainer .advice > i{
+.sideBarContainer .button > i {
     display: inline-block;
     font-size:2.8em;
     margin-bottom:5px;
