@@ -52,7 +52,7 @@
 	content: "\e00a";
 }
 .icon-share:before {
-	content: "\e00b";
+    content: "\e602";
 }
 .icon-replay:before {
 	content: "\e00c";
@@ -89,9 +89,6 @@
 }
 .icon-expand:before {
 	content: "\e600";
-}
-.icon-info:before {
-	content: "\e602";
 }
 .icon-advice:before {
 	content: "\e603";

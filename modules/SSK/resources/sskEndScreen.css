@@ -8,15 +8,11 @@
   top: 0;
   margin: auto; }
   .sskEndScreen .wrapper > .actions {
-    text-align: justify;
+    display: block;
+    text-align: center;
     height: 70px;
-    width: 100%;
     padding: 0;
-    margin: 0 0 2% 0; }
-    .sskEndScreen .wrapper > .actions::after {
-      content: '';
-      display: inline-block;
-      width: 100%; }
+    margin: 0 auto 4px; }
     .sskEndScreen .wrapper > .actions > li {
       display: inline-block;
       height: 100%;
@@ -33,7 +29,7 @@
         text-decoration: none; }
         .sskEndScreen .wrapper > .actions > li > a > i {
           display: block;
-          font-size: 3em;
+          font-size: 2.3em;
           line-height: 50px; }
         .sskEndScreen .wrapper > .actions > li > a:hover {
           background: #333; }
