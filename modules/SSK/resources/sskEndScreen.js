@@ -94,7 +94,7 @@
             if (data.objects && data.objects.length > 0) {
                 var xmlDoc = $.parseXML(data.objects[0].xml);
                 var $xml = $(xmlDoc);
-                infoLink = $xml.find(this.getConfig('infoMetadataField')).text();
+                infoLink = $xml.find(this.getConfig('infoMetadataField')).first().text();
                 adviceLink = $xml.find(this.getConfig('adviceMetadataField')).text();
 
                 // update the sidebar container with the advice link
@@ -102,6 +102,9 @@
                     $('.sideBarContainer > a.advice')
                         .attr('href', adviceLink)
                         .attr('target', this.getConfig('adviceTarget'));
+                }
+                else {
+                    $('.sideBarContainer > a.advice').hide();
                 }
             }
         },
