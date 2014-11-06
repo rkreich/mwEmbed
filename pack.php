@@ -6,13 +6,13 @@ $opts     = array(
     'debug',
 );
 $options  = getopt('', $opts);
-$host     = _getOption($options ,'host', true);
+//$host     = _getOption($options ,'host', true);
+$host = '';
 $widgetId = _getOption($options ,'wid', true);
 $uiConfId = _getOption($options ,'uiconfid', true);
 $playerId = 'kplayer';
 $isDebug  = _getOption($options ,'debug', false, false);
 $isDebug = !is_null($isDebug);
-$isDebug = true;
 
 /**
  * Set global variables
@@ -46,6 +46,7 @@ $loadModulesJsFilename     = 'modules' . $fileSuffix . '.js';
 
 require_once(dirname(__FILE__) . '/includes/DefaultSettings.php');
 require_once(dirname(__FILE__) . '/includes/MwEmbedWebStartSetup.php');
+require_once(dirname(__FILE__) . '/modules/StaticHelper/StaticResourceLoader.php');
 
 // override the local settings
 $wgEnableScriptDebug = $isDebug;
@@ -72,30 +73,26 @@ file_put_contents($outputFolder . '/' . $mwEmbedLoaderFilename, $output);
  *
  */
 ob_start();
-require_once(dirname(__FILE__) . '/modules/KalturaSupport/kalturaIframeClass.php');
-$kIframe = new kalturaIframeClass();
+require_once(dirname(__FILE__) . '/modules/StaticHelper/StaticIframeClass.php');
+$kIframe = new StaticIframeClass();
 echo $kIframe->getIFramePageOutput();
 $output = ob_get_clean();
+
+// copy resources/PIE/PIE.js
+_copyUrlToStatic('resources/PIE/PIE.js');
+
+_copyUrlToStatic('modules/EmbedPlayer/binPlayers/kaltura-player/kdp3.swf');
+
 // replace the paths to the mwEmbedLoader.php static js
 preg_match_all('#src="(https?.*mwEmbedLoader.php[^"]*)#', $output, $matches);
 foreach ($matches[1] as $mwEmbedLoaderUrl) {
     $output = str_replace($mwEmbedLoaderUrl, $mwEmbedLoaderFilename, $output);
 }
 
-// find static js includes like PIE.js
-preg_match_all('#src="(https?://'.$host.'./[^"]*)"#', $output, $matches);
-foreach ($matches[1] as $srcInclude) {
-    _copyUrlToStatic($srcInclude);
-    $newSrcInclude = trim(parse_url($srcInclude, PHP_URL_PATH), '/');
-    $output = str_replace($srcInclude, $newSrcInclude, $output);
-}
-
 // the start up inline script
 $output = preg_replace('/writeScript\(\s?"[^"]+"\)/m', 'writeScript("'.$loadJSInlineFilename.'")', $output);
 
-// find the iframe data
-preg_match('/window.kalturaIframePackageData = ([^;]+)/', $output, $matches);
-$iframeData = json_decode($matches[1], true);
+$iframeData = $kIframe->getIframePackageData();
 
 // copy and replace css files
 foreach($iframeData['skinResources'] as &$skinResource)
@@ -105,85 +102,12 @@ foreach($iframeData['skinResources'] as &$skinResource)
     $skinResource['src'] = trim(parse_url($skinSrc, PHP_URL_PATH), '/');
 }
 
-// replace entry result with null, instead of empty array, otherwise it won't be loaded
-$iframeData['entryResult'] = null;
+$output = str_replace('"wgLoadScript": "http://./load.php"', '"wgLoadScript": "./"', $output);
 
-// clear the error that is added by the incorrect (but required) playlist id
-$iframeData['error'] = null;
-
-// replace ks so it would be dynamically started on player load time
-array_walk_recursive($iframeData, function(&$item, $key) {
-    if ($key == 'ks')
-        $item = null;
-});
-
-// write the new iframe data
-$output = preg_replace('/window.kalturaIframePackageData = ([^;]+)/', 'window.kalturaIframePackageData = '.json_encode($iframeData), $output);
-
-// another ks occurrence in json
-$output = preg_replace('/"ks":"[^"]+"/', '"ks":null', $output);
+// replace the script loader with our static modules.js
+$output = str_replace('http://./load.php', $loadModulesJsFilename, $output);
 
 file_put_contents($outputFolder . '/' . $mwEmbedFrameFilename, $output);
-
-/**
- *
- * modules.js - TODO
- *
- */
-/*
-$moduleList = array( 'mw.MwEmbedSupport' );
-$kalturaSupportModules = array();
-$moduleDir = realpath(dirname( __FILE__)).'/modules/';
-foreach( $wgMwEmbedEnabledModules as $moduleName ){
-    $modListPath = $moduleDir . '/' . $moduleName . '/' . $moduleName . '.php';
-    if( is_file( $modListPath) ){
-        $kalturaSupportModules = array_merge( $kalturaSupportModules,
-            include( $modListPath )
-        );
-    }
-}
-$playerConfig = $container['uiconf_result']->getPlayerConfig();
-foreach ($kalturaSupportModules as $name => $module) {
-    if (isset($module['kalturaLoad']) && $module['kalturaLoad'] == 'always') {
-        $moduleList[] = $name;
-    }
-    // Check if the module has a kalturaPluginName and load if set in playerConfig
-    if (isset($module['kalturaPluginName'])) {
-        if (is_array($module['kalturaPluginName'])) {
-            foreach ($module['kalturaPluginName'] as $subModuleName) {
-                if (isset($playerConfig['plugins'][$subModuleName])) {
-                    $moduleList[] = $name;
-                    continue;
-                }
-            }
-        } else if (isset($playerConfig['plugins'][$module['kalturaPluginName']])) {
-            $moduleList[] = $name;
-        }
-    }
-}
-
-$moduleList[] = 'mw.EmbedPlayer';
-$skinName = (isset($playerConfig['layout']['skin'] ) && $playerConfig['layout']['skin'] != "") ? $playerConfig['layout']['skin'] : null;
-if( $skinName ){
-    $moduleList[] = $skinName;
-}
-
-$fauxRequest    = new WebRequest();
-$resourceLoader = new MwEmbedResourceLoader();
-$modulesToLoad  = array();
-foreach ($moduleList as $name) {
-    $module = $resourceLoader->getModule($name);
-    $loader = $module->getLoaderScript();
-    if ($loader === false) {
-        $modulesToLoad[$name] = $module;
-    }
-}
-
-$context        = new MwEmbedResourceLoaderContext($resourceLoader, $fauxRequest);
-$output         = $resourceLoader->makeModuleResponse($context, $modulesToLoad);
-file_put_contents($outputFolder . '/' . $loadModulesJsFilename, $output);
-*/
-
 
 /**
  *
@@ -192,22 +116,84 @@ file_put_contents($outputFolder . '/' . $loadModulesJsFilename, $output);
  */
 $modules = array( 'jquery', 'mediawiki' );
 wfRunHooks( 'ResourceLoaderGetStartupModules', array( &$modules ) );
+$modules[] = 'mediawiki.Uri'; // required for our loading logic
 $resourceLoader = new MwEmbedResourceLoader();
-$modulesToLoad = array();
+$startupModulesToLoad = array();
 $missing = array();
 foreach ($modules as $name ) {
     $module = $resourceLoader->getModule($name);
     if ($module) {
-        $modulesToLoad[$name] = $module;
+        $startupModulesToLoad[$name] = $module;
     } else {
         $missing[] = $name;
     }
 }
 $fauxRequest    = new WebRequest();
 $context        = new MwEmbedResourceLoaderContext($resourceLoader, $fauxRequest);
-$output = $resourceLoader->makeModuleResponse($context, $modulesToLoad, $missing);
+$output = $resourceLoader->makeModuleResponse($context, $startupModulesToLoad, $missing);
 file_put_contents($outputFolder . '/' . $loadJSInlineFilename, $output);
 
+
+/**
+ *
+ * modules.js
+ *
+ */
+unset($_GET['modules']);
+unset($_GET['only']);
+unset($_GET['skin']);
+unset($_GET['lang']);
+$moduleList = $kIframe->getModulesList();
+$moduleList[] = $kIframe->getUiConfResult()->getPlayerConfig()['layout']['skin'];
+$moduleList[] = 'mw.EmbedPlayerKplayer'; // alway add flash player
+$fauxRequest    = new WebRequest();
+$resourceLoader = new StaticResourceLoader();
+$modulesToLoad  = array();
+function disableModuleUrlLoad($module) {
+    // in debug mode, modules will be loaded via additional requests but we just want it to be un-minified and under modules.js
+    $reflectionObject = new ReflectionObject($module);
+    if ($reflectionObject->hasProperty('debugRaw')) {
+        $debugRawProperty = $reflectionObject->getProperty('debugRaw');
+        $debugRawProperty->setAccessible(true);
+        $debugRawProperty->setValue($module, false);
+    }
+}
+function loadDependencies(array &$modulesToLoad, array $dependencies, StaticResourceLoader $resourceLoader) {
+    global $startupModulesToLoad;
+    foreach($dependencies as $dep)
+    {
+        /** @var MwEmbedResourceLoaderFileModule $depModule */
+        $depModule = $resourceLoader->getModule($dep);
+        disableModuleUrlLoad($depModule);
+        loadDependencies($modulesToLoad, $depModule->getDependencies(), $resourceLoader);
+        if (!array_key_exists($dep, $startupModulesToLoad)) // do not add startup modules again
+            $modulesToLoad[$dep] = $depModule;
+    }
+}
+ob_end_clean();
+foreach ($moduleList as $name) {
+    /** @var MwEmbedResourceLoaderFileModule $module */
+    $module = $resourceLoader->getModule($name);
+    disableModuleUrlLoad($module);
+    loadDependencies($modulesToLoad, $module->getDependencies(), $resourceLoader);
+    $modulesToLoad[$name] = $module;
+}
+
+// move the iframe setup module to be loaded last, otherwise some dependencies are required
+$iframeSetup = $modulesToLoad['mw.KalturaIframePlayerSetup'];
+unset($modulesToLoad['mw.KalturaIframePlayerSetup']);
+$modulesToLoad['mw.KalturaIframePlayerSetup'] = $iframeSetup;
+
+$context        = new MwEmbedResourceLoaderContext($resourceLoader, $fauxRequest);
+$output         = $resourceLoader->makeModuleResponse($context, $modulesToLoad);
+
+preg_match_all('#url\((https?://[^)]*)#', $output, $matches);
+foreach ($matches[1] as $cssUrl) {
+    _copyUrlToStatic($cssUrl);
+    $newCssUrl = trim(parse_url($cssUrl, PHP_URL_PATH), '/');
+    $output = str_replace($cssUrl, $newCssUrl, $output);
+}
+file_put_contents($outputFolder . '/' . $loadModulesJsFilename, $output);
 
 function _getOption($options, $key, $required) {
     if ($required && !isset($options[$key])) {
@@ -223,6 +209,7 @@ function _copyUrlToStatic($url) {
     global $outputFolder;
     $path = trim(parse_url($url, PHP_URL_PATH), '/');
     $srcOutputDir = $outputFolder . '/'. pathinfo($path, PATHINFO_DIRNAME);
+
     if (!file_exists($srcOutputDir))
         mkdir($srcOutputDir, 0777, true);
     copy($path, $outputFolder . '/'. $path);
