@@ -69,7 +69,7 @@
 
         onPlaylistResponse: function(data) {
             if (!data || (data.code && data.message )) {
-                this.log('Error getting playlist items: ' + data.message);
+                this.log('Error getting playlist items: ' + (data ? data.message : ''));
                 return;
             }
             this.templateData.items = data;
@@ -114,10 +114,12 @@
             this._super(); // this is an override of showScreen in mw.KBaseScreen.js - call super
 
             this.$screen.find('a.info, a.advice').parent().hide(); // hide by default
-            var carousel = this.carousel();
-            this.$screen.off().on('click.arrows', '.arrow', function(){
-                carousel( this.className.indexOf('next') > -1 ? 'next' : 'prev' );
-            });
+            if (this.templateData.items.length) {
+                var carousel = this.carousel();
+                this.$screen.off().on('click.arrows', '.arrow', function () {
+                    carousel(this.className.indexOf('next') > -1 ? 'next' : 'prev');
+                });
+            }
 
             if (infoLink)
                 this.$screen.find('a.info')
@@ -131,6 +133,9 @@
                     .attr('target', this.getConfig('adviceTarget'))
                     .parent().show();
 
+            this.$screen.find('a.share').click(function() {
+                $('.sideBarContainer .share').click();
+            });
             this.onUpdateLayout();
         },
 

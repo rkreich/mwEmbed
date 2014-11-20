@@ -8,6 +8,8 @@
 
         if (uri.query.wid)
             playerData.widgetId = uri.query.wid;
+        else
+            mw.log('widget id was not provided');
 
         if (uri.query.entry_id)
             playerData.entryId = uri.query.entry_id;
@@ -29,6 +31,7 @@
 
         playerData.kalturaProxy = uri.query.proxy;
         this.attr('kentryid', playerData.entryId);
+        this.attr('kwidgetid', playerData.widgetId);
         embedPlayerFunc.apply(this, arguments);
     };
 
