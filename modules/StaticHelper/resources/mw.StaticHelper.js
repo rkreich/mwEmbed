@@ -1,14 +1,14 @@
 (function (mw, $, playerData) {
     "use strict";
 
-    mw.StaticHelper = function (embedPlayer, callback) {
-        this.init(embedPlayer, callback);
-    };
+    mw.PluginManager.add('staticHelper', mw.KBasePlugin.extend({
+        setup: function(){
+            // copy the ks to the flashvars, this is required for the flash player
+            if (!playerData.playerConfig.vars.ks) {
+                var kapi = mw.kApiGetPartnerClient(this.embedPlayer.kwidgetid);
+                this.embedPlayer.playerConfig.vars.ks = kapi.ks;
+            }
 
-    mw.StaticHelper.prototype = {
-        bindPostfix: '.staticHelper',
-
-        init: function (embedPlayer, callback) {
             var playlistItem = [];
             playlistItem.push('<HBox id="item">');
             playlistItem.push('     <VBox id="thumb">');
@@ -20,7 +20,7 @@
             playlistItem.push('</HBox>');
             mw.setConfig('KalturaSupport.PlaylistDefaultItemRenderer', playlistItem.join());
 
-            $(embedPlayer).bind('widgetLoaded' + this.bindPostfix, function () {
+            $(this.embedPlayer).bind('widgetLoaded' + this.bindPostFix, function () {
                 var $videoListWrapper = $('.video-list-wrapper');
                 var $videoList = $('.media-rss-video-list');
 
@@ -33,8 +33,6 @@
                 // add the extra 10 pixels that were remove by the playlist render, see mw.Playlist::getListHeight
                 $videoList.height($videoList.height() + 10);
             });
-
-            callback();
         }
-    };
+    }));
 })(window.mw, window.jQuery, window.kalturaIframePackageData);

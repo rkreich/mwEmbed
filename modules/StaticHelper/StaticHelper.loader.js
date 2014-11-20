@@ -17,6 +17,11 @@
         if (uri.query.proxy)
             playerData.proxy = uri.query.proxy;
 
+        if (uri.query.ks) {
+            playerData.playerConfig.vars.ks = uri.query.ks;
+            playerData.enviornmentConfig.ks = uri.query.ks;
+        }
+
         if (uri.query.playlist_id) {
             playerData.playlistId = uri.query.playlist_id;
             var playlistPlugin = {};
@@ -34,10 +39,6 @@
         this.attr('kwidgetid', playerData.widgetId);
         embedPlayerFunc.apply(this, arguments);
     };
-
-    mw.addKalturaPlugin(['mw.StaticHelper'], 'staticHelper', function (embedPlayer, callback) {
-        new mw.StaticHelper(embedPlayer, callback);
-    });
 
     $(mw).bind('KalturaSupportNewPlayer', function (event, embedPlayer) {
         // if proxy was provided, switch the doApiRequest function on the prototype of
