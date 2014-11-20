@@ -78,11 +78,13 @@
         "sskEndScreen": {
             "plugin": true,
             "adviceMetadataField": "Contact",
-            "infoMetadataField": "ProductLink",
-            "playlistId": "0_22vxd3w6"
+            "infoMetadataField": "ProductLink"
         },
         "sskBeratungButton": {"plugin": true},
-        "sskShareButton": {"plugin": true},
+        "sskShareButton": {
+            "plugin": true,
+            "socialShareURL": "parent"
+        },
         "staticHelper": {"plugin": true},
         "playlistAPI": {
             "plugin": true,
