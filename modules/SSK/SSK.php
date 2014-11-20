@@ -43,8 +43,8 @@ return array(
     ),
     "sskEndScreen" => array(
         'scripts'           => "resources/sskEndScreen.js",
-        'styles' => "../SSK/resources/sskEndScreen.css",
-        'templates' => "../SSK/resources/sskEndScreen.tmpl.html",
+        'styles'            => "../SSK/resources/sskEndScreen.css",
+        'templates'         => "../SSK/resources/sskEndScreen.tmpl.html",
         'dependencies'      => 'mw.KBaseScreen',
         'kalturaPluginName' => 'sskEndScreen',
     ),
@@ -55,6 +55,8 @@ return array(
     ),
     "sskShareButton" => array(
         'scripts'           => "resources/sskShareButton.js",
+        'templates'         => '../SSK/resources/sskShareScreen.tmpl.html',
+        'styles'            => '../SSK/resources/sskShareScreen.css',
         'dependencies'      => 'mw.KBaseComponent',
         'kalturaPluginName' => 'sskShareButton',
     ),
