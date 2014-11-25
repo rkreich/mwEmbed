@@ -118,6 +118,7 @@
         },
         "sskBeratungButton": {
             "plugin": true,
+            "adviceMetadataField": "Contact",
             "showTooltip": false
         },
         "sskShareButton": {
