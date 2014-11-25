@@ -14,16 +14,32 @@
             "plugin": true,
             "sliderPreview": false
         },
-        "largePlayBtn": {"plugin": true},
-        "playHead": {"plugin": true},
-        "playPauseBtn": {"plugin": true},
+        "largePlayBtn": {
+            "plugin": true,
+            "showTooltip": false
+        },
+        "playHead": {
+            "plugin": true,
+            "showTooltip": false
+        },
+        "playPauseBtn": {
+            "plugin": true,
+            "showTooltip": false
+        },
         "sskVolumeControl": {
             "accessibleControls": false,
             "accessibleVolumeChange": 0.1,
-            "plugin": true
+            "plugin": true,
+            "showTooltip": false
         },
-        "durationLabel": {"plugin": false},
-        "currentTimeLabel": {"plugin": false},
+        "durationLabel": {
+            "plugin": false,
+            "showTooltip": false
+        },
+        "currentTimeLabel": {
+            "plugin": false,
+            "showTooltip": false
+        },
         "keyboardShortcuts": {
             "volumePercentChange": "0.1",
             "shortSeekTime": "5",
@@ -43,47 +59,71 @@
             "plugin": true
         },
         "liveCore": {"plugin": true},
-        "liveStatus": {"plugin": false},
-        "liveBackBtn": {"plugin": false},
-        "fullScreenBtn": {"plugin": true},
-        "skipBtn": {"plugin": true},
+        "liveStatus": {
+            "plugin": false,
+            "showTooltip": false
+        },
+        "liveBackBtn": {
+            "plugin": false,
+            "showTooltip": false
+        },
+        "fullScreenBtn": {
+            "plugin": true,
+            "showTooltip": false
+        },
+        "skipBtn": {
+            "plugin": true,
+            "showTooltip": false
+        },
         "titleLabel": {
             "align": "none",
             "text": "{mediaProxy.entry.name}",
-            "plugin": true
+            "plugin": true,
+            "showTooltip": false
         },
         "sskDescriptionLabel": {
             "align": "none",
             "order": "2",
             "text": "{mediaProxy.entry.description}",
-            "plugin": true
+            "plugin": true,
+            "showTooltip": false
         },
         "sourceSelector": {
             "switchOnResize": false,
             "simpleFormat": true,
-            "plugin": true
+            "plugin": true,
+            "showTooltip": false
         },
         "related": {
             "plugin": false,
             "parent": "topBarContainer",
             "align": "right",
             "playlistId": "",
-            "displayOnPlaybackDone": true
+            "displayOnPlaybackDone": true,
+            "showTooltip": false
         },
         "sskControlsManager": {"plugin": true},
         "sskTopBarContainer": {"plugin": true},
         "sskControlBarContainer": {"plugin": true},
         "sskSideBarContainer": {"plugin": true},
-        "sskSourceSelector": {"plugin": true},
+        "sskSourceSelector": {
+            "plugin": true,
+            "showTooltip": false
+        },
         "sskEndScreen": {
             "plugin": true,
             "adviceMetadataField": "Contact",
-            "infoMetadataField": "ProductLink"
+            "infoMetadataField": "ProductLink",
+            "showTooltip": false
         },
-        "sskBeratungButton": {"plugin": true},
+        "sskBeratungButton": {
+            "plugin": true,
+            "showTooltip": false
+        },
         "sskShareButton": {
             "plugin": true,
-            "socialShareURL": "parent"
+            "socialShareURL": "parent",
+            "showTooltip": false
         },
         "staticHelper": {"plugin": true},
         "playlistAPI": {
@@ -104,7 +144,7 @@
         },
         {
             "key": "enableTooltips",
-            "value": true,
+            "value": false,
             "overrideFlashvar": false
         },
         {

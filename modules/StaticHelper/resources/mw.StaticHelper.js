@@ -9,17 +9,6 @@
                 this.embedPlayer.playerConfig.vars.ks = kapi.ks;
             }
 
-            var playlistItem = [];
-            playlistItem.push('<HBox id="item">');
-            playlistItem.push('     <VBox id="thumb">');
-            playlistItem.push('         <Image width="100" url="{this.thumbnailUrl}" source="{this.thumbnailUrl}"/>');
-            playlistItem.push('     </VBox>');
-            playlistItem.push('     <VBox id="text">');
-            playlistItem.push('         <Label text="{this.name}" styleName="itemRendererLabel" label="{this.name}" prefix="" font="Arial"/>');
-            playlistItem.push('     </VBox>');
-            playlistItem.push('</HBox>');
-            mw.setConfig('KalturaSupport.PlaylistDefaultItemRenderer', playlistItem.join());
-
             $(this.embedPlayer).bind('widgetLoaded' + this.bindPostFix, function () {
                 var $videoListWrapper = $('.video-list-wrapper');
                 var $videoList = $('.media-rss-video-list');
