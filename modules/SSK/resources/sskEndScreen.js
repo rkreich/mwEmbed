@@ -1,11 +1,9 @@
 (function (mw, $) {
     "use strict";
 
-    var infoLink = null;
-    var adviceLink = null;
-
     mw.PluginManager.add('sskEndScreen', mw.KBaseScreen.extend({
-
+        infoLink: null,
+        adviceLink: null,
         defaultConfig: {
             order: 4,
             templatePath: '../SSK/resources/sskEndScreen.tmpl.html',
@@ -45,8 +43,8 @@
         },
 
         reloadData: function() {
-            infoLink = null;
-            adviceLink = null;
+            this.infoLink = null;
+            this.adviceLink = null;
             this.templateData.items = [];
             this.loadData();
         },
@@ -94,18 +92,10 @@
             if (data.objects && data.objects.length > 0) {
                 var xmlDoc = $.parseXML(data.objects[0].xml);
                 var $xml = $(xmlDoc);
-                infoLink = $xml.find(this.getConfig('infoMetadataField')).first().text();
-                adviceLink = $xml.find(this.getConfig('adviceMetadataField')).text();
+                this.infoLink = $xml.find(this.getConfig('infoMetadataField')).first().text();
+                this.adviceLink = $xml.find(this.getConfig('adviceMetadataField')).text();
 
-                // update the sidebar container with the advice link
-                if (adviceLink) {
-                    $('.sideBarContainer > a.advice')
-                        .attr('href', adviceLink)
-                        .attr('target', this.getConfig('adviceTarget'));
-                }
-                else {
-                    $('.sideBarContainer > a.advice').hide();
-                }
+                this.embedPlayer.triggerHelper('sskEndScreenMetadataUpdate', xmlDoc);
             }
         },
 
@@ -121,15 +111,15 @@
                 });
             }
 
-            if (infoLink)
+            if (this.infoLink)
                 this.$screen.find('a.info')
-                    .attr('href', infoLink)
+                    .attr('href', this.infoLink)
                     .attr('target', this.getConfig('infoTarget'))
                     .parent().show();
 
-            if (adviceLink)
+            if (this.adviceLink)
                 this.$screen.find('a.advice')
-                    .attr('href', adviceLink)
+                    .attr('href', this.adviceLink)
                     .attr('target', this.getConfig('adviceTarget'))
                     .parent().show();
 

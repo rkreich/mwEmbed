@@ -3,9 +3,13 @@
 
     mw.PluginManager.add('sskBeratungButton', mw.KBaseComponent.extend({
 
+        adviceLink: null,
+
         defaultConfig: {
             parent: 'sideBarContainer',
-            insertMode: 'firstChild'
+            insertMode: 'firstChild',
+            adviceMetadataField: null,
+            adviceTarget: '_blank'
         },
 
         setup: function () {
@@ -13,14 +17,33 @@
         },
 
         addBindings: function () {
+            this.bind('sskEndScreenMetadataUpdate', $.proxy(this.onSskEndScreenMetadataUpdate, this));
+        },
+
+        onSskEndScreenMetadataUpdate: function(event, xmlDoc) {
+            var $xml = $(xmlDoc);
+            this.adviceLink = $xml.find(this.getConfig('adviceMetadataField')).text();
+            if (this.$el)
+                this.setAdviceLink();
+        },
+
+        setAdviceLink: function () {
+            if (this.adviceLink) {
+                this.$el
+                    .attr('href', this.adviceLink)
+                    .attr('target', this.getConfig('adviceTarget'))
+                    .css('display', 'block');
+            }
+            else {
+                this.$el.hide();
+            }
         },
 
         getComponent: function () {
             if (!this.$el) {
                 // buttons onclick is being set from sskEndScreen plugin
                 this.$el = $('<a class="button">Beratung</a>').addClass('advice').prepend('<i class="icon-advice"></i>');
-                if (this.getPlayer().playlist) // don't show in playlist mode
-                    this.$el.hide();
+                this.setAdviceLink();
             }
             return this.$el;
         }
