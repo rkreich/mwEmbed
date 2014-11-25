@@ -1,4 +1,7 @@
-body { letter-spacing: 0.04em; }
+body {
+    letter-spacing: 0.04em;
+    background-color: #f6f6f6;
+}
 .topBarContainer {
     position: absolute;
     top: 0;
@@ -1086,7 +1089,6 @@ box-shadow:  0px 1px 0px rgba(0, 0, 0, 0.3);
     xwidth: 330px;
     overflow: hidden;
     font: 14px Arial;
-    padding-left: 20px;
 }
 
 .media-rss-video-list{

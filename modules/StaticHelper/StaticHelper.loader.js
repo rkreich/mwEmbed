@@ -37,8 +37,24 @@
         playerData.kalturaProxy = uri.query.proxy;
         this.attr('kentryid', playerData.entryId);
         this.attr('kwidgetid', playerData.widgetId);
+
+        // replace the item renderer for playlist.
+        // the markup used here is part of the old Kaltura uiconf markup for flash player.
+        var playlistItem = [];
+        playlistItem.push('<HBox id="item">');
+        playlistItem.push('     <VBox id="thumb">');
+        playlistItem.push('         <Image width="100" url="{this.thumbnailUrl}" source="{this.thumbnailUrl}"/>');
+        playlistItem.push('     </VBox>');
+        playlistItem.push('     <VBox id="text">');
+        playlistItem.push('         <Label text="{this.name}" styleName="itemRendererLabel" label="{this.name}" prefix="" font="Arial"/>');
+        playlistItem.push('     </VBox>');
+        playlistItem.push('</HBox>');
+        mw.setConfig('KalturaSupport.PlaylistDefaultItemRenderer', playlistItem.join());
+
         embedPlayerFunc.apply(this, arguments);
     };
+
+
 
     $(mw).bind('KalturaSupportNewPlayer', function (event, embedPlayer) {
         // if proxy was provided, switch the doApiRequest function on the prototype of

@@ -2,24 +2,28 @@
 $opts     = array(
     'host:',
     'wid:',
-    'uiconfid:',
+    'config:',
     'debug',
 );
 $options  = getopt('', $opts);
 //$host     = _getOption($options ,'host', true);
 $host = '';
 $widgetId = _getOption($options ,'wid', true);
-$uiConfId = _getOption($options ,'uiconfid', true);
+$playerConfig = _getOption($options ,'config', true);
 $playerId = 'kplayer';
 $isDebug  = _getOption($options ,'debug', false, false);
 $isDebug = !is_null($isDebug);
+
+if (!file_exists($playerConfig))
+    die('Player config not found');
 
 /**
  * Set global variables
  */
 $_GET['wid']              = $widgetId;
-$_GET['uiconf_id']        = $uiConfId;
+$_GET['jsonConfig']        = file_get_contents($playerConfig);
 $_GET['entry_id']         = '';
+$_GET['uiconf_id']         = 1;
 $_GET['playerId']         = 'kplayer';
 $_GET['debug']            = $isDebug ? 'true' : null;
 $_GET['forceMobileHTML5'] = 'true';
@@ -36,7 +40,7 @@ $_SERVER['SCRIPT_NAME'] = 'mwEmbedLoader.php';
 /**
  * Set output file names
  */
-$fileSuffix            = $widgetId . '_' . $uiConfId;
+$fileSuffix            = $widgetId;
 $outputFolder          = 'static';
 $mwEmbedFrameFilename  = 'mwEmbedFrame' . $fileSuffix . '.html';
 $mwEmbedLoaderFilename = 'mwEmbedLoader' . $fileSuffix . '.js';
@@ -102,7 +106,7 @@ foreach($iframeData['skinResources'] as &$skinResource)
     $skinResource['src'] = trim(parse_url($skinSrc, PHP_URL_PATH), '/');
 }
 
-$output = str_replace('"wgLoadScript": "http://./load.php"', '"wgLoadScript": "./"', $output);
+$output = preg_replace('#"wgLoadScript":\s?"http://./load.php"#', '"wgLoadScript": "./"', $output);
 
 // replace the script loader with our static modules.js
 $output = str_replace('http://./load.php', $loadModulesJsFilename, $output);
