@@ -1136,3 +1136,17 @@ box-shadow:  0px 1px 0px rgba(0, 0, 0, 0.3);
 .playlistItem img {
     height: auto;
 }
+
+.medialistContainer { background-color: #f6f6f6; }
+.k-vertical.k-medialist-header { display: none; height: 0; /* height must be 0, so media list height would be calculated correctly */ }
+.k-chapters-container .k-duration { display: none; }
+.k-chapters-container .k-description { display: none; }
+.k-chapters-container .chapterBox { height: auto; background-color: #fff; transition: none; }
+.k-chapters-container .chapterBox:hover { background-color: #ccc; }
+.k-chapters-container.k-vertical .chapterBox { margin: 0 2px 2px; border: none; }
+.k-chapters-container .chapterBox.active .thumbnailHolder { border: none; }
+.k-chapters-container .thumbnailHolder { display: table-cell; position: static; width: 96px; height: 54px; }
+.k-chapters-container .k-title-container { display: table-cell; vertical-align: middle; color: #fe0000; }
+.k-chapters-container .chapterBox:hover .k-title-container { transition: none; }
+.k-chapters-container .chapterBox.active { background-color: #ccc; }
+.k-chapters-container .chapterBox.active .k-title-container { color: #fff; }

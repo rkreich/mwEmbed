@@ -129,7 +129,11 @@
         "staticHelper": {"plugin": true},
         "playlistAPI": {
             "plugin": true,
-            "_kpl0Id": "playlist-id-required-for-proper-static-player"
+            "autoInsert": false,
+            "autoContinue": true,
+            "showControls": false,
+            "thumbnailWidth": 96,
+            "mediaItemHeight": 78
         }
     },
     "uiVars": [
@@ -151,11 +155,6 @@
         {
             "key": "adsOnReplay",
             "value": true,
-            "overrideFlashvar": false
-        },
-        {
-            "key": "mediaProxy.preferedFlavorBR",
-            "value": 1600,
             "overrideFlashvar": false
         }
     ],
