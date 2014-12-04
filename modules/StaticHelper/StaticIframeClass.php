@@ -836,7 +836,7 @@ HTML;
             $basePath = realpath(dirname($wgKalturaPSHtml5SettingsPath) . '/../ps/');
             $path     = str_replace('{html5ps}', $basePath, $path);
         } else {
-            $basePath = realpath(__DIR__);
+            $basePath = realpath(__DIR__.'/../KalturaSupport/');
             $path     = $basePath . '/' . $path;
         }
 
@@ -930,7 +930,7 @@ HTML;
                         <?php $moduleList = $this->getModulesList(); ?>
                         window.kalturaIframePackageData.templates =  <?php echo $this->getTemplatesJSON() ?>;
                         /* FIXME! */
-                        var moduleList = ["mw.MwEmbedSupport","mw.KalturaIframePlayerSetup","mw.KWidgetSupport","keyboardShortcuts","controlBarContainer","topBarContainer","sideBarContainer","largePlayBtn","playPauseBtn","fullScreenBtn","currentTimeLabel","durationLabel","sourceSelector","related","playlistPlugin","acCheck","acPreview","carouselPlugin","liveStream","titleLabel","statisticsPlugin","sskVolumeControl","sskScrubber","sskDescriptionLabel","sskControlsManager","sskTopBarContainer","sskControlBarContainer","sskSideBarContainer","sskSourceSelector","sskEndScreen","sskBeratungButton","sskShareButton","mw.StaticHelper","mw.StaticHelper","mw.EmbedPlayer","ssk"];
+                        var moduleList = ["mw.MwEmbedSupport","mw.KalturaIframePlayerSetup","mw.KWidgetSupport","keyboardShortcuts","controlBarContainer","topBarContainer","sideBarContainer","largePlayBtn","playPauseBtn","fullScreenBtn","currentTimeLabel","durationLabel","sourceSelector","related","acCheck","acPreview","carouselPlugin","liveStream","titleLabel","statisticsPlugin","sskVolumeControl","sskScrubber","sskDescriptionLabel","sskControlsManager","sskTopBarContainer","sskControlBarContainer","sskSideBarContainer","sskSourceSelector","sskEndScreen","sskBeratungButton","sskShareButton","mw.StaticHelper","mw.StaticHelper","mw.EmbedPlayer","ssk"];
                         mw.config.set('KalturaSupport.DepModuleList', moduleList);
                         mw.loader.load(moduleList);
                         mw.loader.go();
@@ -964,24 +964,11 @@ HTML;
         </head>
         <body>
         <?php echo $this->getKalturaIframeScripts(); ?>
-        <?php
-        // wrap in a top level playlist in the iframe to avoid javascript base .wrap call that breaks video playback in iOS
-        if ($this->getUiConfResult()->isPlaylist()){
-        ?>
-        <div class="playlistInterface"
-             style="position: relative; width: 100%; height: 100%">
-            <?php
-            }
-            ?>
+        <div class="playlistInterface" style="position: relative; width: 100%; height: 100%">
             <div class="mwPlayerContainer player-out">
                 <?php echo $this->getVideoHTML(); ?>
             </div>
-            <?php
-            if ($this->getUiConfResult()->isPlaylist()){
-            ?></div><?php
-        }
-        echo $this->getPlayerCheckScript();
-        ?>
+        <?php echo $this->getPlayerCheckScript(); ?>
         </body>
         </html>
         <?php
