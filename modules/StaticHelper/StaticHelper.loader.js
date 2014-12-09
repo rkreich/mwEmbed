@@ -17,6 +17,9 @@
         if (uri.query.proxy)
             playerData.proxy = uri.query.proxy;
 
+        if (uri.query.related_service)
+            playerData.relatedService = uri.query.related_service;
+
         if (uri.query.ks) {
             playerData.playerConfig.vars.ks = uri.query.ks;
             playerData.enviornmentConfig.ks = uri.query.ks;

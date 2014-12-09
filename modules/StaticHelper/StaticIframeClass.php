@@ -498,7 +498,7 @@ class StaticIframeClass
 		}
 		body {
 			font: normal 13px helvetica, arial, sans-serif;
-			background: #000;
+			background: #f6f6f6;
 			color: #fff;
 			overflow: hidden;
 		}

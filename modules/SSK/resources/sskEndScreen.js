@@ -1,4 +1,4 @@
-(function (mw, $) {
+(function (mw, $, playerData) {
     "use strict";
 
     mw.PluginManager.add('sskEndScreen', mw.KBaseScreen.extend({
@@ -51,18 +51,15 @@
 
         loadRelatedPlaylist: function() {
             var _this = this;
-            var requestObject = {
-                'service': 'playlist',
-                'action': 'execute',
-                'id': this.getConfig('playlistId'),
-                'filter:objectType': 'KalturaMediaEntryFilterForPlaylist',
-                'filter:idNotIn': this.getPlayer().kentryid,
-                'filter:limit': this.getConfig('itemsLimit'),
-                'playlistContext:objectType': 'KalturaEntryContext',
-                'playlistContext:entryId': this.getPlayer().kentryid
-            };
 
-            this.getKalturaClient().doRequest(requestObject, $.proxy(this.onPlaylistResponse, this));
+            $.ajax({
+                url: playerData.proxy,
+                data: {
+                    p: playerData.relatedService + '?id=' + this.getPlayer().kentryid
+                },
+                dataType: 'json',
+                success: $.proxy(this.onPlaylistResponse, this)
+            });
         },
 
         onPlaylistResponse: function(data) {
@@ -211,4 +208,4 @@
 
     }));
 
-})(window.mw, window.jQuery);
+})(window.mw, window.jQuery, window.kalturaIframePackageData);
